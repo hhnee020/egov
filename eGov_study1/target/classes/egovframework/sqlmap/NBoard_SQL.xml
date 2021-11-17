@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+
+<sqlMap namespace="nboard_space">
+
+<typeAlias  alias="egovMap"  type="egovframework.rte.psl.dataaccess.util.EgovMap"/>
+<typeAlias  alias="nboardVO"    type="egov.service.NBoardVO"/>
+
+
+	<insert id="nboardDAO.insertNBoard">
+		<![CDATA[
+		INSERT INTO nboard(  
+						unq,
+						title,
+						pass,
+						name,
+						content,
+						rdate,
+						udate )
+						
+			  VALUES (  nboard_seq.nextval,
+						'$title$',
+						'1234',
+						'$name$',
+						'$content$',
+						sysdate,
+						sysdate )
+		]]>
+	</insert>
+
+	<select id="nboardDAO.selectNBoardList" resultClass="egovMap">
+	
+	
+	select b.* from(
+				select rownum rn, a.* from(
+					select unq, 
+							title , 
+							name, 
+							to_char(rdate, 'yyyy/mm/dd') rdate , 
+							hits 
+							from nboard
+				
+				<isNotNull property="s_text">
+					<isNotEmpty  property="s_text" >
+						<isNotEqual  property="s_field" compareValue="rdate">
+							where $s_field$ like '%$s_text$%'
+						</isNotEqual>
+					</isNotEmpty>
+						<isEqual  property="s_field" compareValue="rdate">
+								
+								where to_char(rdate, 'yyyy-mm-dd')  like '%$s_text$%'
+		
+						</isEqual>
+					
+				</isNotNull>
+				
+							order by unq desc ) a
+													 ) b
+				WHERE   <isNotNull property="unq1">
+					unq > $unq1$
+		        </isNotNull>
+		        
+		        <isNotNull property="unq2">
+					unq <![CDATA[<]]> $unq2$ AND rownum <![CDATA[<]]> 2
+		        </isNotNull>
+				
+				<isNotNull property="unq3">
+					rn >= #s_no#  AND rn <![CDATA[<=]]> #e_no#
+				</isNotNull>
+	
+	</select>
+	
+	<select id="nboardDAO.selectNBoardTotal" resultClass="java.lang.Integer">
+	
+	<![CDATA[
+	
+	select count(*) total from nboard  
+	
+	]]>	
+	
+	<isNotNull property="s_text">
+					<isNotEmpty  property="s_text" >
+						<isNotEqual  property="s_field" compareValue="rdate">
+							where $s_field$ like '%$s_text$%'
+						</isNotEqual>
+					</isNotEmpty>
+						<isEqual  property="s_field" compareValue="rdate">
+								
+								where to_char(rdate, 'yyyy-mm-dd')  like '%$s_text$%'
+		
+						</isEqual>
+					
+		</isNotNull>
+			
+	</select>
+	
+	<select id="nboardDAO.selectNBoardDetail" resultClass="nboardVO">
+		
+		select title ,name , content,
+		to_char(rdate ,'yyyy/mm/dd') rdate,
+		to_char(udate ,'yyyy/mm/dd') udate,
+		 hits
+		 from nboard
+				where unq=#unq#
+				
+	</select>
+	
+	
+	<update id="nboardDAO.updateNBoard">
+	
+	update nboard set 
+					title = #title#,
+					name = #name#,
+					content = #content#,
+					udate = sysdate
+					
+			where unq = #unq#
+	</update>
+	
+	
+	<update id="nboardDAO.updateNBoardHits">
+	
+	update nboard set hits=hits+1 where unq=#unq#
+	
+	</update>
+	
+	
+	<delete id="nboardDAO.deleteNBorad">
+		<![CDATA[
+			DELETE FROM nboard WHERE unq=#unq#
+		]]>
+	</delete>
+
+	<delete id="nboardDAO.deleteAllNBorad">
+	
+	
+	delete from nboard where unq in($values$)
+	
+	
+	</delete>
+	
+
+
+</sqlMap>

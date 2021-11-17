@@ -1,0 +1,75 @@
+@charset "UTF-8";
+
+body {
+	font-size:12px;
+	font-family:'맑은 고딕';
+}
+.div_top {
+	width:100%; 
+	text-align:center;
+	background:#cccccc;
+	padding-top:10px;
+	padding-bottom:10px;
+}
+.div1 {
+	width:1200px;
+}
+.div2 {
+	float:left;width:200px;height:500px;
+	background:yellow;
+}
+.div3 {
+	float:left;width:1000px;height:500px; 
+	background:#fff;
+}
+
+body {
+	font-size:12px;
+	font-family:'맑은 고딕';
+}
+.div_top {
+	width:100%; 
+	text-align:center;
+	background:#cccccc;
+	padding-top:10px;
+	padding-bottom:10px;
+}
+.div1 {
+	width:1200px;
+}
+.div2 {
+	float:left;width:200px;height:500px;
+	background:yellow;
+}
+.div3 {
+	float:left;width:1000px;height:500px; 
+	background:#fff;
+}
+
+table {
+	width:800px;
+	border-collapse:collapse;
+}
+th {
+	border:1px solid #ccc;
+	padding:5px;
+} 
+td {
+	border:1px solid #ccc;
+	padding:3px;
+	text-align:center;
+}
+
+table {
+	width:800px;
+	border-collapse:collapse;
+}
+th {
+	border:1px solid #ccc;
+	padding:5px;
+} 
+td {
+	border:1px solid #ccc;
+	padding:3px;
+	text-align:center;
+}

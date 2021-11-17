@@ -1,0 +1,164 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+ <%@ taglib prefix="c"  uri="http://java.sun.com/jsp/jstl/core" %>
+ 
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>공지사항 등록화면</title> 
+	
+	<link rel="stylesheet" href="/css/admin_main.css">
+	
+	<link rel="stylesheet" href="//code.jquery.com/ui/1.13.0/themes/base/jquery-ui.css">
+  	<script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+  	<script src="https://code.jquery.com/ui/1.13.0/jquery-ui.js"></script>
+  	
+   	<script>
+  	$(function() {
+		
+  		$("#btn_before").click(function(){
+  			if("${before}" != "") {
+  				location = "admin_nboardModify.do?unq=${before}";
+  			} else {
+  				alert("마지막입니다.");
+  			}
+  		}); 
+  		
+  		$("#btn_next").click(function(){
+  			if("${next}" != "") {
+  				location = "admin_nboardModify.do?unq=${next}";
+  			} else {
+  				alert("마지막입니다.");
+  			}
+  		});
+
+  		$("#btn_save").click(function(){  
+  			
+  			if( $.trim($("#title").val()) == "" ) {
+  				alert("제목을 입력해주세요.");
+  				$("#title").focus();
+  				return false;
+  			}
+  			if( $.trim($("#content").val()) == "" ) {
+  				alert("내용을 입력해주세요.");
+  				$("#content").focus();
+  				return false;
+  			}
+  			
+  			var formdata = $("#frm").serialize();
+  			
+  			$.ajax({
+  				type : "POST",
+  				url  : "admin_nboardModifySave.do",
+  				data : formdata,
+  				
+  				datatype : "text",
+  				success : function(data) {  // ok
+  					if(data == "ok") {
+  						alert("저장(변경)완료");
+  						location="admin_nboardList.do";
+  					} else {
+  						alert("저장(변경)실패");
+  					}
+  				},
+  			    error : function() {
+  			    	alert("오류발생");
+  			    }
+  			});
+  		});
+  	});
+  	</script>
+	
+</head>
+
+<style>
+
+</style>
+
+<body>
+<div class="div1">
+
+	<div class="div_top">
+		<h2>관리자모드</h2>
+	</div>
+	<div class="div2">
+	<!-- left menu S -->
+
+	<%@ include file="../include/left_menu.jsp" %>
+
+	<!-- left menu E -->
+	</div>
+	<div class="div3">
+	
+		<div style="position:relative; left:20px; top:30px; margin-bottom:10px;">
+
+		</div>
+
+		<div style="position:relative; left:20px; top:30px; margin-bottom:5px;">
+			<span style="font-size:20px;font-weight:blod;">공지사항 수정화면</span>
+		</div>
+
+		<div style="position:relative; left:20px; top:30px;">
+		
+	<form id="frm">
+	<table style="width:600px;">
+		
+		<input type="hidden" name="unq" value="${vo.unq}" >
+		
+		<tr>
+			<th>제목</th>
+			<td><input type="text" name="title" id="title" style="width:98%" value="${vo.title} "></td>
+		</tr>
+		<tr>
+			<th>이름</th>
+			<td><input type="text" name="name" id="name" value="${vo.name}"></td>
+		</tr>
+		<tr>
+			<th>내용</th>
+			<td><textarea name="content" id="content" style="width:98%;height:150px;">${vo.content}</textarea></td>
+		</tr>
+		<tr>
+			<th>등록일</th>
+			<td>${vo.rdate}</td>
+		</tr>
+		<tr>
+		<tr>
+		<tr>
+			<th>변경일</th>
+			<td>${vo.udate}</td>
+		</tr>
+		<tr>
+		<tr>
+			<th>조회수</th>
+			<td>${vo.hits}</td>
+		</tr>
+		<tr>
+		
+	</table>
+	
+	<div style="width:600px; text-align:center; margin-top:10px;">
+		
+		<button type="button" id="btn_before">이전</button>
+		<button type="button" id="btn_next">다음</button>
+		<button type="button" id="btn_save">저장</button>
+		<button type="reset">취소</button>
+	</div>
+	</form>
+	
+		</div>
+	</div>
+</div>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+

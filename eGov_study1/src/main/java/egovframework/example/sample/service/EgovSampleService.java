@@ -34,6 +34,17 @@ import java.util.List;
  *  Copyright (C) by MOPAS All right reserved.
  */
 public interface EgovSampleService {
+	
+	String insertDept(DeptVO vo) throws Exception;
+	
+	List<?> selectDeptList() throws Exception;
+	
+	DeptVO selectDeptDetail(int deptno) throws Exception;
+
+	int modifySaveDept(DeptVO deptvo) throws Exception;
+	
+
+	int deleteDept(int deptno)  throws Exception;
 
 	/**
 	 * 글을 등록한다.
@@ -41,32 +52,8 @@ public interface EgovSampleService {
 	 * @return 등록 결과
 	 * @exception Exception
 	 */
-	
-	
-	/**
-	 * 부서 정보 저장
-	 */
-	String insertDept(DeptVO vo) throws Exception;
-	// 명쇄 역활, 추가된 내용
-	
-	/* 부서정보 출력*/
-	List<?> selectDeptList() throws Exception;
-	
-	/* 상세보기 ( 수정 화면 )*/
-	
-	DeptVO selectDeptDetail( int deptno ) throws Exception;
-	
-	/* 수정 처리*/
-	
-	int updateDept( DeptVO vo ) throws Exception;
-	
-	/*삭제*/
-	int deleteDept( DeptVO vo ) throws Exception;
-	
-	/////////////////////////////////////////////////////////////////////////
-	
 	String insertSample(SampleVO vo) throws Exception;
- 
+
 	/**
 	 * 글을 수정한다.
 	 * @param vo - 수정할 정보가 담긴 SampleVO
@@ -74,8 +61,6 @@ public interface EgovSampleService {
 	 * @exception Exception
 	 */
 	void updateSample(SampleVO vo) throws Exception;
-	
-	
 
 	/**
 	 * 글을 삭제한다.
@@ -108,5 +93,7 @@ public interface EgovSampleService {
 	 * @exception
 	 */
 	int selectSampleListTotCnt(SampleDefaultVO searchVO);
+
+
 
 }

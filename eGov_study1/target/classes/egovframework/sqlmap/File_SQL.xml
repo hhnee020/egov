@@ -1,16 +1,103 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
 
-
-
-
-<sqlMap namespace="fileBoard_space" >
-
+	
+<sqlMap namespace="fileBoard_space">
+	<typeAlias  alias="egovMap" type="egovframework.rte.psl.dataaccess.util.EgovMap"/>
+	<typeAlias  alias="filevo"    type="egov.service.FileVO"/>
 	<insert id="fileDAO.insertFileboard">
-	
-	insert into fileboard( unq , title, pass, name, content, hits, rdate , udate, filename, filesize)
-	values(  fileBoard_seq , #title#, #pass#, #name#, #content#, #hits#, #rdate# , #udate#, #filename#,#filesize#)
-	
+		
+			INSERT INTO fileboard( 
+							unq,
+							title,
+							pass,
+							name,
+							content,
+							rdate,
+							udate,
+							filename,
+							filesize
+					) VALUES( 
+							fileBoard_seq.nextval,
+							#title#,
+							#pass#,
+							#name#,
+							#content#,
+							sysdate,
+							sysdate,
+							#filename#,
+							#filesize#  
+							
+					)
 	</insert>
+	
+	<select id="fileDAO.selectFileTotal" resultClass="java.lang.Integer">
+		SELECT COUNT(*) FROM fileboard
+	</select>
+	
+	 <select id="fileDAO.selectFileList" resultClass="egovMap">
+		SELECT b.* from(
+			SELECT rownum rn, a.* from (	
+				Select 
+					unq,title,name,to_char(rdate,'yyyy-mm-dd') rdate,filename,hits 
+				from fileboard
+					order by unq desc
+			) a ) b
+			where rn BETWEEN $sNo$ AND $eNo$
+		
+	</select>
+	
+<!-- 	<select id="fileDAO.selectFileList" resultClass="egovMap">
+		select unq,title,name,to_char(rdate,'yyyy-mm-dd') rdate, filename,hits from fileboard
+	</select> -->
 
+
+	<select id="fileDAO.selectFileboardPass" resultClass="java.lang.Integer">
+	
+		SELECT COUNT(*) FROM fileboard WHERE unq=#unq# AND pass=#pass#
+	
+	</select>
+	
+
+
+		<select id="fileDAO.selectFileboardDetail" resultClass="filevo">
+	
+		SELECT  
+				unq,
+				title,
+				name,
+				content,
+				to_char(rdate,'yyyy/mm/dd') rdate,
+				to_char(udate,'yyyy/mm/dd') udate,
+				filename,
+				filesize
+		FROM
+				fileboard
+		WHERE
+				unq=#unq#
+		
+	
+	</select> 
+	
+	<update id="fileDAO.updateFileboardFilename">
+		UPDATE fileboard  SET filename=#newfilename#  WHERE unq=#unq#
+	</update>
+
+
+	<update id="fileDAO.updateFileboard">
+	
+		UPDATE fileboard 
+				SET
+					title='$title$',
+					name='$name$',
+					content='$content$',
+					udate=sysdate
+					$filename$
+				
+				WHERE
+					unq = '$unq$'
+	</update>
+	
+	
+	
 </sqlMap>

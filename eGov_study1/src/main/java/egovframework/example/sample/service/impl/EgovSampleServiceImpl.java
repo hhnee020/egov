@@ -156,21 +156,30 @@ public class EgovSampleServiceImpl extends EgovAbstractServiceImpl implements Eg
 
 	@Override
 	public DeptVO selectDeptDetail(int deptno) throws Exception {
-		// TODO Auto-generated method stub
+		
 		return sampleDAO.selectDeptDetail(deptno);
 	}
 
 	@Override
-	public int updateDept(DeptVO vo) throws Exception {
+	public int modifySaveDept(DeptVO deptvo) throws Exception {
 		// TODO Auto-generated method stub
-		return  sampleDAO.updateDept(vo);
+		return sampleDAO.modifySaveDept(deptvo);
 	}
 
 	@Override
-	public int deleteDept(DeptVO vo) throws Exception {
+	public int deleteDept(int deptno) throws Exception {
 		// TODO Auto-generated method stub
-		return sampleDAO.deleteDept( vo );
-	/// dao 실행처리
+		return sampleDAO.deleteDept(deptno);
 	}
+
+
+
+	/*
+	 * @Override 
+	 * public List<?> selectDept() throws Exception { // TODO Auto-generated method stub 
+	 * return sampleDAO.selectDept(); 
+	 * }
+	 */
+	
 
 }

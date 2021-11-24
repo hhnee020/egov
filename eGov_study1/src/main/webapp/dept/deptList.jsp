@@ -1,59 +1,58 @@
+<%@ page import="java.sql.ResultSet"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-    <%@ taglib prefix="c"      uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
+
 <!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
-</head>
+<html lang="kr">
+ <head>
+  <meta charset="UTF-8">
+	<title>Document</title>
+  	<link rel="stylesheet" href="../css/layout.css">
+	<link rel="stylesheet" href="../css/main.css">
+ </head>
+
+
 <body>
 
 
-<table border="1" width="400">
+<section>
+	
+	<article>
+		<div style="width:400px; padding-top:20px; margin:0 auto;">
 
-			<tr>
-			<th>번호</th>
-			<th>부서번호</th>
-			<th>부서이름</th>
-			<th>위치</th>
-			<th>삭제</th>
-			</tr>
-		
-		<% int number =1; %>
-		<c:set var ="number" value="1" />
-		<c:forEach var="result" items="${list}" varStatus="status">
-            
-            <tr>
-            <td><%=number%>, ${number } ,${status.count } , ${status.last }</td>
-            <td><a href="deptModify.do?deptno=${result.deptno}">${result.deptno}</a></td>
-            <td>${result.dname }</td>
-            <td>${result.loc }</td>
-             <td><a href="deptDelete.do?deptno=${result.deptno}">del </a></td>
-            </tr>
-            <%  number ++; %>
-            <c:set var ="number" value="${number +1 }" />
-            
-        </c:forEach>
-        	
-        	
-</table>
+			<table>
+				<tr>
+					<th>번호</th>
+					<th>부서이름</th>
+					<th>부서번호</th>
+					<th>부서위치</th>
+					<th>삭제</th>
+				</tr>
+				<c:set var="number" value="1"/>
+				<c:forEach var="result" items="${list}" varStatus="status">
+					<tr>
+						<%-- <td>${status.count} </td> --%>
+						<td>${number}</td>
+						<td>${result.deptno}</td>
+						<td><a href="deptModify.do?deptno=${result.deptno}">${result.dname}</a></td>
+						<td>${result.loc}</td>
+						<td><button onclick="location.href='deptDelete.do?deptno=${result.deptno}'">삭제</button></td>
+					</tr>
+				<c:set var="number" value="${number+1}"/>
+				</c:forEach>
+				
+			</table>
+			
+			<div style="width:400px; text-align:right; margin-top:10px;">
+			<button type="button" onclick="location='deptWrite.do'">부서등록</button>
+			</div>
+		</div>
 
-			<c:forEach var="i" begin="1" end="10">
-        		${i }
-        	</c:forEach>
-        	
-        	
-        	<c:forEach var="i" begin="1" end="10">
-        		
-        		
-        		${i }
-        	<c:if test="${i ==5 }">
-        	
-        		<br>
-        	</c:if>
-        	
-        	</c:forEach>
-        	
+	</article>
+</section>
+
+
 </body>
 </html>

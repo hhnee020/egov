@@ -36,6 +36,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.support.SessionStatus;
+import org.springframework.web.servlet.ModelAndView;
 import org.springmodules.validation.commons.DefaultBeanValidator;
 
 /**
@@ -69,111 +70,7 @@ public class EgovSampleController {
 	/** Validator */
 	@Resource(name = "beanValidator")
 	protected DefaultBeanValidator beanValidator;
-	
-	
-	/// 주소등록  연습
-	@RequestMapping(value ="/Test.do")
-	public String Test() {
-		
-		return "sample/Test";
-		
-	}
-	
-	@RequestMapping(value ="/cal3.do")
-	public String cal3() {
-		
-		return "sample/cal3";
-		
-	}
-	
-	@RequestMapping(value ="/deptWrite.do")
-	public String deptWrite() {
-		
-		return "dept/deptWrite";
-		
-	}
-	@RequestMapping( value ="/deptWriteSave.do")
-	public String deptWriteSave( DeptVO vo ) throws Exception {
-		
-		System.out.println( vo.getDeptno() );
-		System.out.println ( vo.getDname() ) ;
-		System.out.println( vo.getLoc() );
-		
-		String result = sampleService.insertDept(vo);
-		if(result == null ) {
-			
-			System.out.print(" 저장 완료");
-		}else {
-			
-			System.out.print(" 저장 실패 ");
-		}
-		
-		return "redirect:deptList.do";
-	}
-	
-	@RequestMapping( value ="/deptList.do")
-	
-	public String selectDeptList( ModelMap map ) throws Exception {
-		
-		List<?> list = sampleService.selectDeptList();
-		
-		
-		System.out.print(" List ::::: " +list );
-		
-		map.addAttribute("list", list );
-		
-		return "dept/deptList";
-	}
-	
-	@RequestMapping( value ="/deptModify.do")
-	public String  selectDeptDetail( int deptno, ModelMap map ) throws Exception{
-		
-		DeptVO vo = sampleService.selectDeptDetail( deptno );
-		
-		map.addAttribute("deptVO", vo );
-		
-		return "dept/deptModify";
-	}
-	
-	@RequestMapping( value ="/deptModifySave.do")
-	
-	public String updateDept(DeptVO vo) throws Exception{
-		
-		int result = sampleService.updateDept(vo);
-		
-		if(  result == 1 ) {	
-			
-			System.out.print(" 수정 완료");
-		
-		}else {
-		
-				System.out.print(" 수정 실패 ");
-			}
-	
-		
-		return "redirect:deptList.do";
-	}
-	
-	@RequestMapping( value ="/deptDelete.do")
-		
-		public String deleteDept(DeptVO vo) throws Exception{
-			
-			int result = sampleService.deleteDept(vo);
-			
-			if(  result == 1 ) {	
-				
-				System.out.print(" 삭제 완료");
-			
-			}else {
-			
-					System.out.print(" 삭제 실패 ");
-				}
-		
-			
-			return "redirect:deptList.do";
-		}
-		
-	
+
 	/**
 	 * 글 목록을 조회한다. (pageing)
 	 * @param searchVO - 조회할 정보가 담긴 SampleDefaultVO
@@ -181,7 +78,75 @@ public class EgovSampleController {
 	 * @return "egovSampleList"
 	 * @exception Exception
 	 */
-	@RequestMapping(value = "/SampleList.do")
+	
+	
+	@RequestMapping(value = "/deptWrite.do")
+	public String deptWrite() {
+		return "dept/deptWrite";
+	}
+	
+	@RequestMapping(value="/deptWriteSave.do")
+	public String deptWriteSave(DeptVO deptvo) throws Exception {
+		System.out.println(deptvo.getDeptno());
+		System.out.println(deptvo.getDname());
+		System.out.println(deptvo.getLoc());
+		
+		String result = sampleService.insertDept(deptvo);
+		if(result == null) {
+			System.out.println("저장 성공");
+		} else {
+			System.out.println("저장 실패");
+		}
+		return "redirect:deptList.do";
+	}
+
+	@RequestMapping(value="/deptList.do")
+	public String selectDeptList(ModelMap map) throws Exception {
+		
+		
+		  List<?> list = sampleService.selectDeptList();
+		  System.out.println("list::::"+list);
+		  map.addAttribute("list",list);
+		 
+		
+		return "dept/deptList";
+	}
+	
+	@RequestMapping(value ="/deptModify.do")
+	public String selectDeptDetail(int deptno , ModelMap map) throws Exception {
+		DeptVO vo = sampleService.selectDeptDetail(deptno);
+		map.addAttribute("deptvo",vo);
+		return "dept/deptModify";
+	}
+	
+	@RequestMapping(value ="/deptModifySave.do")
+	public String modifySave(DeptVO deptvo) throws Exception {
+		
+		int result = sampleService.modifySaveDept(deptvo);
+		if(result >= 1) {
+			System.out.println("저장 성공");
+		} else {
+			System.out.println("저장 실패");
+		}
+		
+		
+		return "redirect:deptList.do";
+	}
+	
+	@RequestMapping(value ="/deptDelete.do")
+	public String deleteDept(int deptno) throws Exception {
+		int result = sampleService.deleteDept(deptno);
+		if(result >= 1) {
+			System.out.println("삭제 성공");
+		} else {
+			System.out.println("삭제 실패");
+		}
+		return "redirect:deptList.do";
+	}
+	
+	
+	
+	@RequestMapping(value = "/egovSampleList.do")
 	public String selectSampleList(@ModelAttribute("searchVO") SampleDefaultVO searchVO, ModelMap model) throws Exception {
 
 		/** EgovPropertyService.sample */

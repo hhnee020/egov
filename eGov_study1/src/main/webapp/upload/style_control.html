@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="kr">
+ <head>
+  <meta charset="UTF-8">
+  <title>Document</title>
+ </head>
+
+<style>
+.div1 {
+	width:200px;
+	height:150px;
+	background-color:#ffff99;
+	font-size:12px;
+	padding:10px;
+	margin-top:3px;
+	margin-bottom:10px;
+	/*display:none; *//* block(view) , none(hide) */
+}
+</style>
+
+<script>
+function fn_body() {
+	document.getElementById("div1").style.display = "none";
+}
+function fn_display() {
+	
+	var a1 = document.getElementById("div1").style.display;
+	if(a1 == "none") {
+		a1 = "block";
+		c1 = "skyblue";
+	} else {
+		a1 = "none";
+		c1 = "pink";
+	}
+	document.getElementById("div1").style.display = a1;
+	document.getElementById("btn1").style.backgroundColor = c1;
+}
+</script>
+
+<body onload="fn_body()">
+ 
+<button type="button" id="btn1" onclick="fn_display()">보이기/감추기1</button>
+<br>
+<div class="div1" id="div1">
+= 학습과목 = <br>
+1. JAVA <br>
+2. ORACLE <br>
+3. HTML <br>
+</div>
+<br>
+<button type="button">보이기/감추기2</button>
+
+
+ </body>
+</html>

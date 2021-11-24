@@ -39,9 +39,10 @@
   				contentType: false, 
   				
   				datatype : "json",
-  				success : function(data) {  // ok
-  					if(data.result == "ok") {
-  						alert("저장완료");
+  				success : function(data) {
+  					console.log(data.json);
+  					if(data == "ok") {
+  						alert(data.filename + " 저장완료");
   					} else {
   						alert("저장실패");
   					}
@@ -88,6 +89,7 @@
 		<div style="position:relative; left:20px; top:30px;">
 		
 	<form id="frm" enctype="multipart/form-data">
+	
 	<table style="width:600px;">
 		<tr>
 			<th>제목</th>
@@ -110,8 +112,14 @@
 		
 		<tr>
 			<th>파일</th>
-			<td><input type="file" name="file1" id="file1" style="width:50%"></td>
+			<td>
+			
+			<input type="file" name="file1" id="file1" style="width:50%"> <br>
+			<input type="file" name="file2" id="file2" style="width:50%">
+			
+			</td>
 		</tr>
+		
 	</table>
 	
 	<div style="width:600px; text-align:center; margin-top:10px;">

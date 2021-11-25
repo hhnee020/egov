@@ -2,13 +2,13 @@
     pageEncoding="UTF-8"%>
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+
 
 <!DOCTYPE html>
 <html>
 <head>
 	<meta charset="UTF-8">
-	<title><spring:message code="title.file.write" /></title> 
+	<title>암호 입력 화면</title> 
 	
 	<link rel="stylesheet" href="/css/admin_main.css">
 	
@@ -19,37 +19,29 @@
   	<script>
   	$(function() {
 		
-  		$("#btn_save").click(function(){  
+  		$("#btn_del").click(function(){  
   			
-  			if( $.trim($("#title").val()) == "" ) {
-  				alert("제목을 입력해주세요.");
-  				$("#title").focus();
+  			if( $.trim($("#pass").val()) == "" ) {
+  				alert("암호를 입력해주세요.");
+  				$("#pass").focus();
   				return false;
   			}
-  			if( $.trim($("#content").val()) == "" ) {
-  				alert("내용을 입력해주세요.");
-  				$("#content").focus();
-  				return false;
-  			}
-
-  			var formdata = new FormData(document.getElementById('frm'));
+  			
+  			var formdata = $("#frm").serialize();
+  			
   			$.ajax({
   				type : "POST",
-  				url  : "fileboardWriteSave.do",
+  				url  : "fileboardDelete.do",
   				data : formdata,
   				
-  				processData: false,
-  				contentType: false, 
-  				
   				datatype : "text",
-  				success : function(data) { 
-  					
-  					//var datas = JSON.parse(data);
-  					
+  				success : function(data) {
   					if(data == "ok") {
-  						alert("저장완료");
+  						alert("삭제완료");
+  					} else if(data == "pass_fail") {
+  						alert("암호가 일치하지 않습니다.");
   					} else {
-  						alert("저장실패");
+  						alert("삭제실패");
   					}
   				},
   			    error : function() {
@@ -59,12 +51,12 @@
   		});
   	});
   	</script>
+	
 </head>
+
 <style>
 
 </style>
-
-<!------<spring:message code="upload.dir" />------->
 
 <body>
 <div class="div1">
@@ -88,48 +80,27 @@
 		</div>
 
 		<div style="position:relative; left:20px; top:30px; margin-bottom:5px;">
-			<span style="font-size:20px;font-weight:blod;">자료 게시판 등록</span>
+			<span style="font-size:20px;font-weight:blod;">암호 입력 화면</span>
 		</div>
-
+		
 		<div style="position:relative; left:20px; top:30px;">
 		
-	<form id="frm" enctype="multipart/form-data">
+	<form id="frm">
+	
+	<input type="hidden" name="unq" value="${unq }" />
+	<input type="hidden" name="filename" value="${filename }" />
 	
 	<table style="width:600px;">
-		<tr>
-			<th>제목</th>
-			<td><input type="text" name="title" id="title" style="width:98%"></td>
-		</tr>
-		
 		<tr>
 			<th>암호</th>
 			<td><input type="password" name="pass" id="pass" style="width:50%"></td>
 		</tr>
-		
-		<tr>
-			<th>이름</th>
-			<td><input type="text" name="name" id="name" style="width:50%"></td>
-		</tr>
-		<tr>
-			<th>내용</th>
-			<td><textarea name="content" id="content" style="width:98%;height:150px;"></textarea></td>
-		</tr>
-		
-		<tr>
-			<th>파일</th>
-			<td>
-			
-			<input type="file" name="file1" id="file1" style="width:50%"> <br>
-			<input type="file" name="file2" id="file2" style="width:50%">
-			
-			</td>
-		</tr>
-		
+
 	</table>
 	
 	<div style="width:600px; text-align:center; margin-top:10px;">
-		<button type="button" id="btn_save">저장</button>
-		<button type="reset">취소</button>
+		<button type="button" id="btn_del">삭제</button>
+		<button type="button" onclick="history.back()">이전</button>
 	</div>
 	</form>
 	

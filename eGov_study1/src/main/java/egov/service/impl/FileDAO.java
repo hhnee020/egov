@@ -42,4 +42,9 @@ public class FileDAO extends EgovAbstractDAO {
 		return update("fileDAO.updateFileboard",vo);
 	}
 
+	public int deleteFileboard(FileVO vo) {
+		// TODO Auto-generated method stub
+		return delete("fileDAO.deleteFileboard",vo);
+	}
+
 }

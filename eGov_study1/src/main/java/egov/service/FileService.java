@@ -17,4 +17,6 @@ public interface FileService {
 	
 	int selectFileboardPass(FileVO vo) throws Exception;
 	int updateFileboard(FileVO vo) throws Exception;
+
+	int deleteFileboard(FileVO vo) throws Exception;
 }

@@ -19,6 +19,7 @@ public class FileImpl implements FileService {
 		return fileDAO.insertFileboard(vo);
 	}
 
+
 	@Override
 	public int selectFileTotal(FileVO vo) throws Exception {
 		// TODO Auto-generated method stub
@@ -51,6 +52,12 @@ public class FileImpl implements FileService {
 	@Override
 	public int updateFileboard(FileVO vo) throws Exception {
 		return fileDAO.updateFileboard(vo);
+	}
+
+	@Override
+	public int deleteFileboard(FileVO vo) throws Exception {
+		// TODO Auto-generated method stub
+		return fileDAO.deleteFileboard(vo);
 	}
 
 	

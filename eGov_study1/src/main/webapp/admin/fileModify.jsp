@@ -1,12 +1,14 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+
 <!DOCTYPE html>
 <html>
 <head>
 	<meta charset="UTF-8">
-	<title>공지사항 수정 화면</title> 
+	<title>공지사항 등록화면</title> 
 	
 	<link rel="stylesheet" href="/css/admin_main.css">
 	
@@ -14,8 +16,7 @@
   	<script src="https://code.jquery.com/jquery-3.6.0.js"></script>
   	<script src="https://code.jquery.com/ui/1.13.0/jquery-ui.js"></script>
   	
-  	
-  <script>
+  	<script>
   	function fn_filedel(filename) {
   		
   		if( confirm("파일을 삭제하시겠습니까?"+filename) ) {
@@ -130,19 +131,20 @@
 		</div>
 
 		<div style="position:relative; left:20px; top:30px; margin-bottom:5px;">
-			<span style="font-size:20px;font-weight:blod;">자료 게시판 수정 </span>
+			<span style="font-size:20px;font-weight:blod;">자료 게시판 수정</span>
 		</div>
 
 		<div style="position:relative; left:20px; top:30px;">
 		
-	<form id="frm" enctype="multipart/form-data">
+	<form name="frm" id="frm" enctype="multipart/form-data">
 	
 	<input type="hidden" name="unq" value="${vo.unq }">
 	<input type="hidden" name="filename" value="${vo.filename }">
+
 	<table style="width:600px;">
 		<tr>
 			<th>제목</th>
-			<td><input type="text" name="title" id="title" style="width:98%" value="${vo.title }"> </td>
+			<td><input type="text" name="title" id="title" value="${vo.title }" style="width:98%"></td>
 		</tr>
 		
 		<tr>
@@ -152,44 +154,48 @@
 		
 		<tr>
 			<th>이름</th>
-			<td><input type="text" name="name" id="name" style="width:50%" value="${vo.name }"></td>
+			<td><input type="text" name="name" id="name" value="${vo.name }" style="width:50%"></td>
 		</tr>
 		<tr>
 			<th>내용</th>
-			<td><textarea name="content" id="content" style="width:98%;height:150px;" >${vo.content }</textarea></td>
+			<td>
+<textarea name="content" id="content" style="width:98%;height:150px;">${vo.content }</textarea></td>
 		</tr>
 		
 		<tr>
 			<th>파일</th>
 			<td>
 			
-						<c:set var="filename" value="${vo.filename }"/>
-					<%
-	      		String filename = (String)pageContext.getAttribute("filename") ;
-				String[] array = null;
-				if(filename != null && !filename.equals("")) {
-					array = filename.split("／");
-					for( int i=0; i<array.length; i++ ) {
-				%>
-						<a href="javascript:window.open(encodeURI('downloadFile.do?requestedFile=<%=array[i] %>'))"><%=array[i] %></a>
-		
-		<a href="javascript:fn_filedel('<%=array[i] %>')"><img src="/images/icon/del.png" style="width:15px;height:15px;" /></a>
-						<br>
-				<%
-					}
+			<c:set var="filename" value="${vo.filename }" />
+			
+			<%
+      		String filename = (String)pageContext.getAttribute("filename") ;
+			String[] array = null;
+			if(filename != null && !filename.equals("")) {
+				array = filename.split("／");
+				for( int i=0; i<array.length; i++ ) {
+			%>
+					<a href="javascript:window.open(encodeURI('downloadFile.do?requestedFile=<%=array[i] %>'))"><%=array[i] %></a>
+	
+	<a href="javascript:fn_filedel('<%=array[i] %>')"><img src="/images/icon/del.PNG" style="width:15px;height:15px;" /></a>
+					<br>
+			<%
 				}
-				
-				int arrayCnt = 0;
-				if( array != null ) {
-					arrayCnt = array.length;
-				}
-				
-	 			%>
-	 			<br>
-				
+			}
+			
+			int arrayCnt = 0;
+			if( array != null ) {
+				arrayCnt = array.length;
+			}
+			
+ 			%>
+ 			<br>
+			
 			<input type="file" name="file1" id="file1" style="width:50%"> <br>
 			<input type="file" name="file2" id="file2" style="width:50%">
+			
 			<input type="hidden" id="filecnt" value="<%=arrayCnt %>">
+			
 			</td>
 		</tr>
 		

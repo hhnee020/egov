@@ -15,14 +15,20 @@
   	<script src="https://code.jquery.com/jquery-3.6.0.js"></script>
   	<script src="https://code.jquery.com/ui/1.13.0/jquery-ui.js"></script>
   	
- <script>
+  	<script>
   	$(function() {
 		
   		$("#btn_save").click(function(){
 			location = "fileboardModify.do?unq=${vo.unq}";
   		});
+  		
+  		$("#btn_delete").click(function(){
+			location = "passWrite.do?unq=${vo.unq}&filename=${vo.filename}";
+  		});
+  		
   	});
   	</script>
+	
 </head>
 
 <style>
@@ -60,15 +66,15 @@
 	
 	<table style="width:600px;">
 		<tr>
-			<th width="25%">제목</th>
+			<th width="20%">제목</th>
 			<td>${vo.title }</td>
 		</tr>
 		<tr>
-			<th width="25%">이름</th>
+			<th>이름</th>
 			<td>${vo.name }</td>
 		</tr>
 		<tr>
-			<th width="25%">내용</th>
+			<th>내용</th>
 			
 			<!--    aaaaa \n bbbbb \n ccccccc   -->
 			
@@ -76,7 +82,7 @@
 		</tr>
 		
 		<tr>
-			<th width="25%">파일</th>
+			<th>파일</th>
 			<td>
 			
 			<c:set var="filename" value="${vo.filename }" />
@@ -88,8 +94,7 @@
 				for( int i=0; i<array.length; i++ ) {
 			%>
 					<!-- <a href="javascript:window.open(encodeURI('downloadFile.do?requestedFile=<%=array[i] %>'))"><%=array[i] %></a> -->
-					
-					<a href="http://localhost:8080/upload/<%=array[i] %>"><%=array[i] %></a>
+					<a href="http://localhost:9080/upload/<%=array[i] %>" target="_blank"><%=array[i] %></a>
 					<br>
 			<%
 				}

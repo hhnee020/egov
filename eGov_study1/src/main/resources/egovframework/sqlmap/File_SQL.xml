@@ -35,6 +35,7 @@
 		SELECT COUNT(*) FROM fileboard
 	</select>
 	
+	 
 	 <select id="fileDAO.selectFileList" resultClass="egovMap">
 		SELECT b.* from(
 			SELECT rownum rn, a.* from (	
@@ -97,7 +98,10 @@
 				WHERE
 					unq = '$unq$'
 	</update>
-	
+
+<delete id="fileDAO.deleteFileboard">
+		DELETE FROM fileboard WHERE unq=#unq#
+	</delete>
 	
 	
 </sqlMap>

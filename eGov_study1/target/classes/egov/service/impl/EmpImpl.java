@@ -1,4 +1,4 @@
-package egov.service.Impl;
+package egov.service.impl;
 
 import java.util.List;
 
@@ -11,57 +11,52 @@ import egov.service.EmpVO;
 import egovframework.rte.fdl.cmmn.EgovAbstractServiceImpl;
 
 @Service("empService")
-public class EmpImpl extends EgovAbstractServiceImpl implements EmpService{
+public class EmpImpl implements EmpService {
 
 	@Resource(name="empDAO")
-	private EmpDAO empDAO;
+	private EmpDAO  empDAO;
 	
 	@Override
 	public List<?> selectEmpList(EmpVO vo) throws Exception {
-//		System.out.println("select Impl");
-		// TODO Auto-generated method stub
 		return empDAO.selectEmpList(vo);
 	}
 
 	@Override
 	public String insertEmp(EmpVO vo) throws Exception {
-		// TODO Auto-generated method stub
 		return empDAO.insertEmp(vo);
 	}
 
 	@Override
-	public EmpVO viewEmpDetail(EmpVO vo) throws Exception {
-		// TODO Auto-generated method stub
-		return empDAO.viewEmpDetail(vo);
+	public int selectEmpTotal() throws Exception {
+		return empDAO.selectEmpTotal();
 	}
 
 	@Override
-	public int selectEmpTotal() throws Exception {
-		// TODO Auto-generated method stub
-		System.out.println("impl 접근");
-		int testimpl = empDAO.selectEmpTotals();
-		System.out.println("impl : " + testimpl );
-//		return empDAO.selectEmpTotals();
-		return testimpl;
+	public EmpVO selectEmpDetail(int empno) throws Exception {
+		return empDAO.selectEmpDetail(empno);
 	}
 
 	@Override
 	public int updateEmp(EmpVO vo) throws Exception {
-		// TODO Auto-generated method stub
 		return empDAO.updateEmp(vo);
 	}
 
 	@Override
-	public int maxcount() throws Exception {
-		// TODO Auto-generated method stub
-		return empDAO.maxcount();
+	public int deleteEmp(int empno) throws Exception {
+		return empDAO.deleteEmp(empno);
 	}
 
 	@Override
-	public List<?> selectJobList() throws Exception {
-		// TODO Auto-generated method stub
-		return empDAO.selectJobList();
+	public int selectEmpEmpno() throws Exception {
+		return empDAO.selectEmpEmpno();
 	}
 
-
+	@Override
+	public List<?> selectEmpJobList() throws Exception {
+		
+		return empDAO.selectEmpJobList();
+	}
 }
+
+
+

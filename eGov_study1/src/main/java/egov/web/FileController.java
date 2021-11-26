@@ -162,29 +162,44 @@ public class FileController {
 		return "admin/fileModify";
 	}
 
-	@RequestMapping(name = "fileboardList.do")
-	public String fileboardList(FileVO vo, Model model) throws Exception {
-		System.out.println("dwad");
+	@RequestMapping("fileboardList.do")
+	public String selectFileboardList( FileVO vo, Model model ) 
+															throws Exception {
+		// 출력페이지 번호 가져오기
+		int page_no = vo.getPage_no();
 		
-		int page_no = vo.getPageNo(), s_no = (page_no-1)*10+1, e_no = s_no+(10-1);
+		// 출력페이지 번호를 이용하여 SQL의 출력 범위 설정
+		// 1p->1, 2p->11, 3p->21
+		int s_no = (page_no-1)*10 + 1 ;
+		int e_no = s_no + (10-1);
 		
-		vo.setsNo(s_no);
-		vo.seteNo(e_no);
+		// s_no 변수와 e_no 변수의 vo 세팅
+		vo.setS_no(s_no);
+		vo.setE_no(e_no);
 		
-		List<?> result = fileService.selectFileList(vo);
-		int total = fileService.selectFileTotal(vo);
+		// 목록 출력 서비스 실행
+		List<?> list = fileService.selectFileboardList(vo);
 		
-		int total_page = (int) Math.ceil((double) total/10);
+		// 총 데이터 값을 얻는 서비스 실행 
+		int total = fileService.selectFileboardTotal(vo);
+		
+		// 총 페이지 값을 얻는 설정(세팅)
+		// 17개 (2페이지의 결과);; (double)17/10 ->ceil(1.7) -> (int)2.0  -> 2
+		int total_page =  (int) Math.ceil((double)total/10);
+		
+		// 출력 페이지의 시작 행번호
 		int rownum = total - (page_no-1)*10;
-		vo.setRownum(rownum);
-		vo.setTotalpage(total_page);
+		
 		vo.setTotal(total);
-		model.addAttribute("vo", vo);
-		model.addAttribute("result", result);
+		vo.setTotal_page(total_page);
+		vo.setRownum(rownum);
+
+		model.addAttribute("vo",vo);
+		model.addAttribute("list",list);
 		
 		return "admin/fileList";
 	}
-	
+
 	// 
 	@RequestMapping("fileboardDelete.do")
 	@ResponseBody
@@ -271,40 +286,28 @@ public class FileController {
 	}
 	
 	@RequestMapping(value = "/downloadFile.do")
-	public void downloadFile(   String requestedFile,
+	public void downloadFile(   String file,
 								HttpServletResponse response) throws Exception {
 		
 		String path = ps.getString("uploadDir");
 		
 		String uploadPath = path;
-		File uFile = new File(uploadPath, requestedFile);
+		File uFile = new File(uploadPath, file);
 		int fSize = (int) uFile.length();
 
 		if (fSize > 0) {
 		
 			BufferedInputStream in = new BufferedInputStream(new FileInputStream(uFile));
-			//String mimetype = servletContext.getMimeType(requestedFile);
 			String mimetype = "text/html";
 			
 			response.setBufferSize(fSize);
 			response.setContentType(mimetype);
-			response.setHeader("Content-Disposition", "attachment; filename=\"" + requestedFile + "\"");
+			response.setHeader("Content-Disposition", "attachment; filename=\"" + file + "\"");
 			response.setContentLength(fSize);
 			FileCopyUtils.copy(in, response.getOutputStream());
 			in.close();
 			
 			response.getOutputStream().flush();
-			response.getOutputStream().close();
-		} else {
-			response.setContentType("application/x-msdownload");
-			PrintWriter printwriter = response.getWriter();
-			printwriter.println("<html>");
-			printwriter.println("<br><br><br><h2>Could not get file name:<br>"+ requestedFile + "</h2>");
-			printwriter.println("<br><br><br><center><h3><a href='javascript: history.go(-1)'>Back</a></h3></center>");
-			printwriter.println("<br><br><br>© webAccess");
-			printwriter.println("</html>");
-			printwriter.flush();
-			printwriter.close();
 		}
 	}
 	
@@ -313,7 +316,7 @@ public class FileController {
 		
 		//String path = ps.getString("uploadDir");
 		
-		String uploadPath = "/Users/hani/eclipse-workspace/apple1/src/main/webapp/upload";
+		String uploadPath = "/Users/hani/Downloads";
 		String fullPath = uploadPath + "/" + filename;
 		File file = new File(fullPath);					
 		file.delete();

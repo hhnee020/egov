@@ -1,4 +1,4 @@
-package egov.service.Impl;
+package egov.service.impl;
 
 import java.util.List;
 import java.util.Map;
@@ -10,7 +10,7 @@ import egov.service.FileVO;
 
 @Service("fileService")
 public class FileImpl implements FileService {
-
+   
 	@Resource(name="fileDAO")
 	FileDAO fileDAO;
 	
@@ -20,20 +20,17 @@ public class FileImpl implements FileService {
 	}
 
 	@Override
-	public int selectFileTotal(FileVO vo) throws Exception {
-		// TODO Auto-generated method stub
-		return fileDAO.selectFileTotal(vo);
+	public List<?> selectFileboardList(FileVO vo) throws Exception {
+		return fileDAO.selectFileboardList(vo);
 	}
 
 	@Override
-	public List<?> selectFileList(FileVO vo) throws Exception {
-		// TODO Auto-generated method stub
-		return fileDAO.selectFileList(vo);
+	public int selectFileboardTotal(FileVO vo) throws Exception {
+		return fileDAO.selectFileboardTotal(vo);
 	}
 
 	@Override
 	public FileVO selectFileboardDetail(FileVO vo) throws Exception {
-		// TODO Auto-generated method stub
 		return fileDAO.selectFileboardDetail(vo);
 	}
 
@@ -41,7 +38,6 @@ public class FileImpl implements FileService {
 	public int updateFileboardFilename(Map<String, String> map) throws Exception {
 		return fileDAO.updateFileboardFilename(map);
 	}
-
 
 	@Override
 	public int selectFileboardPass(FileVO vo) throws Exception {
@@ -53,6 +49,14 @@ public class FileImpl implements FileService {
 		return fileDAO.updateFileboard(vo);
 	}
 
-	
-	
+	@Override
+	public int deleteFileboard(FileVO vo) throws Exception {
+		return fileDAO.deleteFileboard(vo);
+	}
+
+
 }
+
+
+
+

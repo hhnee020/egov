@@ -1,6 +1,5 @@
-package egov.service.Impl;
+package egov.service.impl;
 
-import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.stereotype.Repository;
@@ -9,43 +8,44 @@ import egov.service.NBoardVO;
 import egovframework.rte.psl.dataaccess.EgovAbstractDAO;
 
 @Repository("nboardDAO")
-public class NBoardDAO extends EgovAbstractDAO{
+public class NBoardDAO  extends EgovAbstractDAO {
 
 	public String insertNBoard(NBoardVO vo) {
-		// TODO Auto-generated method stub
 		return (String) insert("nboardDAO.insertNBoard",vo);
 	}
 
-	public List<?> selectNBoardList(NBoardVO vo) {
-		// TODO Auto-generated method stub
-		return list("nboadDAO.selectNBoardList",vo);
+	public List<?> selectNBoardList(NBoardVO vo) {		
+		return list("nboardDAO.selectNBoardList",vo);
 	}
 
 	public int selectNBoardTotal(NBoardVO vo) {
-		// TODO Auto-generated method stub
 		return (int) select("nboardDAO.selectNBoardTotal",vo);
 	}
 
-	public NBoardVO selectNBoardDetail(NBoardVO vo) {
-		// TODO Auto-generated method stub
-		return (NBoardVO) select("nboardDAO.selectNBoardDetail",vo);
+	public NBoardVO selectNBoardDetail(int unq) {
+		return (NBoardVO) select("nboardDAO.selectNBoardDetail",unq);
 	}
 
 	public int updateNBoard(NBoardVO vo) {
-		// TODO Auto-generated method stub
-		return (int)update("nboardDAO.updateNBoard",vo);
+		return update("nboardDAO.updateNBoard",vo);
 	}
 
-	public int deleteNBoard(int unq) {
-		// TODO Auto-generated method stub
-		return (int) delete("nboardDAO.deleteNBoard",unq);
+	public int deleteNBoard(NBoardVO vo) {
+		return delete("nboardDAO.deleteNBoard",vo);
 	}
 
-	public int deleteAllNBoard(HashMap<String, List<String>> map) {
-		// TODO Auto-generated method stub
-		return (int) delete("nboardDAO.deleteAllNBoard",map);
-						
+	public int deleteNBoardAll(String values) {
+		return delete("nboardDAO.deleteNBoardAll",values);
+	}
+
+	public int updateNBoardHits(NBoardVO vo) {
+		return update("nboardDAO.updateNBoardHits",vo);
 	}
 	
-
 }
+
+
+
+
+
+

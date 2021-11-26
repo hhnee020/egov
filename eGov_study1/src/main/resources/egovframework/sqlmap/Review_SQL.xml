@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+
+
+<sqlMap namespace="review_board_space">
+
+	<typeAlias  alias="egovMap"  	type="egovframework.rte.psl.dataaccess.util.EgovMap"/>
+	<typeAlias  alias="reviewvo"    type="egov.service.ReviewVO"/>
+	<typeAlias  alias="commentvo"   type="egov.service.CommentVO"/>
+
+	<insert id="reviewDAO.insertReview">
+	
+		INSERT INTO review_board ( 
+								unq,
+								title,
+								pass,
+								name,
+								content,
+								rdate,
+								udate,
+								email,
+								sns
+					  ) VALUES( 
+								review_board_seq.nextval,
+								'$title$',
+								'$pass$',
+								'$name$',
+								'$content$',
+								sysdate,
+								sysdate,
+								'$email$',
+								'$sns$'
+								)
+	</insert>
+	
+	<select id="reviewDAO.selectReviewList"  resultClass="egovMap">
+			SELECT b.* FROM (
+					SELECT rownum rn, a.* FROM (
+							SELECT	unq,
+									title,
+									name,
+									to_char(rdate,'yyyy/mm/dd') rdate,
+									to_char(udate,'yyyy/mm/dd') udate,
+									email,
+									sns,
+									hits,
+									( select count(*) from review_comment where review_comment.p_unq = rv.unq ) commcnt     
+							FROM
+									review_board  rv
+							ORDER BY
+									unq DESC ) a ) b
+			WHERE 
+				rn  between #start_no# AND #end_no#
+	
+	</select>
+	
+	<select id="reviewDAO.selectReviewTotal" resultClass="java.lang.Integer">
+	
+		SELECT COUNT(*) FROM review_board 
+	
+	</select>
+
+	<select id="reviewDAO.selectReviewDetail"  resultClass="reviewvo">
+	
+		SELECT 	unq,
+				title,
+				name,
+				to_char(rdate,'yyyy/mm/dd') rdate,
+				to_char(udate,'yyyy/mm/dd') udate,
+				email,
+				sns,
+				hits,
+				content
+		FROM
+				review_board
+		WHERE
+				unq=#unq#
+	
+	</select>
+
+	<update id="reviewDAO.updateReview">
+	
+	</update>
+	
+	<delete id="reviewDAO.deleteReview">
+	
+	</delete>
+
+	<insert id="reviewDAO.insertComment">
+	
+		INSERT INTO review_comment (
+								unq,
+								p_unq,
+								name,
+								pass,
+								mark,
+								comment1,
+								rdate )
+						VALUES (
+								review_comment_seq.nextval,
+								#p_unq#,
+								#name#,
+								#pass#,
+								#mark#,
+								#comment1#,
+								sysdate )
+	</insert>
+	
+	<select id="reviewDAO.selectCommList" resultClass="egovMap">
+	
+		SELECT 	unq,
+				p_unq,
+				name,
+				decode(mark,'5','최고','4','좋음','3','보통','2','부족','1','나쁨' ) markmsg,
+				<!-- decode(mark,'5','★★★★★','4','★★★★☆','3','★★★☆☆','2','★★☆☆☆','1','★☆☆☆☆' ) mark, -->
+				mark,
+				comment1,
+				to_char(rdate,'mm.dd') rdate
+		FROM
+				review_comment
+		WHERE
+				p_unq=#unq#
+	
+	</select>
+	
+
+</sqlMap>
+
+
+
+
+
+
+

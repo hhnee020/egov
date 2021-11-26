@@ -177,7 +177,7 @@
 			%>
 					<a href="javascript:window.open(encodeURI('downloadFile.do?requestedFile=<%=array[i] %>'))"><%=array[i] %></a>
 	
-	<a href="javascript:fn_filedel('<%=array[i] %>')"><img src="/images/icon/del.PNG" style="width:15px;height:15px;" /></a>
+	<a href="javascript:fn_filedel('<%=array[i] %>')"><img src="/images/icons/delete.PNG" style="width:15px;height:15px;" /></a>
 					<br>
 			<%
 				}

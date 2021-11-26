@@ -1,12 +1,7 @@
 package egov.service;
 
-import lombok.Getter;
-import lombok.Setter;
-
-@Setter
-@Getter
 public class EmpVO {
-   
+
 	private int empno;
 	private String ename;
 	private String job;
@@ -14,6 +9,30 @@ public class EmpVO {
 	private String hiredate;
 	private double sal;
 	private double comm;
+	private int deptno;
+	
+	int page_no  = 1;    // 페이지번호 
+	int start_no = 1;    // 출력 인덱스 시작번호
+	int end_no   = 10;   // 출력 인덱스 끝번호
+
+	public int getPage_no() {
+		return page_no;
+	}
+	public void setPage_no(int page_no) {
+		this.page_no = page_no;
+	}
+	public int getStart_no() {
+		return start_no;
+	}
+	public void setStart_no(int start_no) {
+		this.start_no = start_no;
+	}
+	public int getEnd_no() {
+		return end_no;
+	}
+	public void setEnd_no(int end_no) {
+		this.end_no = end_no;
+	}
 	public int getEmpno() {
 		return empno;
 	}
@@ -62,29 +81,5 @@ public class EmpVO {
 	public void setDeptno(int deptno) {
 		this.deptno = deptno;
 	}
-	public int getPage_no() {
-		return page_no;
-	}
-	public void setPage_no(int page_no) {
-		this.page_no = page_no;
-	}
-	public int getS_index() {
-		return s_index;
-	}
-	public void setS_index(int s_index) {
-		this.s_index = s_index;
-	}
-	public int getE_index() {
-		return e_index;
-	}
-	public void setE_index(int e_index) {
-		this.e_index = e_index;
-	}
-	private int deptno;
-	private int page_no = 1;
-	private int s_index;
-	private int e_index;
-	
-	
 	
 }

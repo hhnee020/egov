@@ -44,6 +44,17 @@ public interface ReviewService {
 	 */
 
 	List<?> selectCommList(ReviewVO vo) throws Exception;
+
+	
+	/* 패스 워드 암호 비교 */
+	int selectCommentPass(CommentVO vo) throws Exception;
+
+	
+	/*코멘트 수정 처리 */
+	int updateComment(CommentVO vo) throws Exception;
+	/*코멘트 삭제 처리 */
+	int deleteComment(CommentVO vo)  throws Exception;
+
 }
 
 

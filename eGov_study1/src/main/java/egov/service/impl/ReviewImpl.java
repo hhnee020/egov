@@ -18,7 +18,7 @@ public class ReviewImpl implements ReviewService {
 
 	
 	@Resource(name="reviewDAO")
-	ReviewDAO reviewDAO;
+	ReviewDAO reviewDAO; // review 클래스 사용 넘기
 	
 	@Override
 	public String insertReview(ReviewVO vo) throws Exception {
@@ -58,6 +58,26 @@ public class ReviewImpl implements ReviewService {
 	@Override
 	public List<?> selectCommList(ReviewVO vo) throws Exception {
 		return reviewDAO.selectCommList(vo);
+	}
+
+	
+
+	@Override
+	public int selectCommentPass(CommentVO vo) {
+		// TODO Auto-generated method stub
+		return  reviewDAO.selectCommentPass(vo);
+	}
+
+	@Override
+	public int updateComment(CommentVO vo) throws Exception {
+		// TODO Auto-generated method stub
+		return reviewDAO.updateComment(vo);
+	}
+
+	@Override
+	public int deleteComment(CommentVO vo) throws Exception {
+		// TODO Auto-generated method stub
+		return reviewDAO.deleteComment(vo);
 	}
 
 }

@@ -138,6 +138,9 @@
 		
 	<form name="frm" id="frm" enctype="multipart/form-data">
 	
+	
+	<!-- ----unq file name  디테일페이지로 넘어오게 ---- -->
+	
 	<input type="hidden" name="unq" value="${vo.unq }">
 	<input type="hidden" name="filename" value="${vo.filename }">
 
@@ -166,13 +169,14 @@
 			<th>파일</th>
 			<td>
 			
-			<c:set var="filename" value="${vo.filename }" />
+			
+			<c:set var="filename" value="${vo.filename }" /> <!-- --------filename 변수 생생 ---- -->
 			
 			<%
       		String filename = (String)pageContext.getAttribute("filename") ;
 			String[] array = null;
-			if(filename != null && !filename.equals("")) {
-				array = filename.split("／");
+			if(filename != null && !filename.equals("")) { ///  파일이 잇을 경우
+				array = filename.split("／"); //  여러 개일 경우 "/"  로 나누  
 				for( int i=0; i<array.length; i++ ) {
 			%>
 					<a href="javascript:window.open(encodeURI('downloadFile.do?requestedFile=<%=array[i] %>'))"><%=array[i] %></a>

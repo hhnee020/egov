@@ -122,8 +122,38 @@
 				p_unq=#unq#
 	
 	</select>
+	<select id="reviewDAO.selectCommentPass" resultClass="java.lang.Integer">
 	
+	select count(*)
+			FROM
+				review_comment
+		WHERE
+				unq=#unq# and pass=#pass#
+				
+	</select>
+<update id="reviewDAO.updateComment">
 
+	update		review_comment
+					
+					set
+							
+								name =#name#,
+								mark =#mark#,
+								comment1  =#comment1#
+	 
+					 where unq=#unq# 
+
+</update>
+
+
+<delete id="reviewDAO.deleteComment">
+
+	delete from review_comment
+	
+	where 
+		unq=#unq# 
+
+</delete>
 </sqlMap>
 
 

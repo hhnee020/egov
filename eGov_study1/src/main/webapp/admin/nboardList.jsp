@@ -153,6 +153,7 @@ function fn_delete(unq) {
 			<th>삭제</th>
 		</tr>
 
+		<!--- 반복 ----->
 		<c:forEach var="result" items="${list}">
 
 		<tr align="center">
@@ -169,7 +170,10 @@ function fn_delete(unq) {
 		
 		<c:set var="rownum" value="${rownum-1}"/>
 		</c:forEach>
-
+		
+		<!--- 반복 ----->
+		
+		
 	</table>
 	
 	<div style="width:800px; text-align:left; margin-top:10px;">

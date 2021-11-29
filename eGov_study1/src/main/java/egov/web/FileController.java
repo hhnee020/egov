@@ -73,6 +73,9 @@ public class FileController {
 		return message;
 	}
 	
+	
+	/// 파일 저장 ;;
+	
 	@RequestMapping("fileboardModifySave.do")
 	@ResponseBody
 	public String updateFileboard( MultipartHttpServletRequest multiRequest, FileVO vo )  
@@ -161,7 +164,9 @@ public class FileController {
 		model.addAttribute("vo",vo);
 		return "admin/fileModify";
 	}
-
+	
+	
+ /// 파일 리스트 출력
 	@RequestMapping("fileboardList.do")
 	public String selectFileboardList( FileVO vo, Model model ) 
 															throws Exception {
@@ -217,7 +222,7 @@ public class FileController {
 
 		if( pass_cnt == 1 ) {
 			// 삭제 서비스 실행
-			// result -> 1
+			// result -> 1 
 			int result = fileService.deleteFileboard(vo);
 			
 			if( result != 1 ) {  // 삭제 실패
@@ -226,8 +231,8 @@ public class FileController {
 				
 				// 물리적인 파일 삭제
 				String filename = vo.getFilename();
-				if( filename != null  &&  !filename.equals("") ) {
-					
+				if( filename != null  &&  !filename.equals("") ) { // 파일이 있을 경
+				
 					String[] array = filename.split("／");
 					for(int i=0; i<array.length; i++) {
 						String save_dir = path;
@@ -247,7 +252,7 @@ public class FileController {
 	
 
 	public static Map<String,String> uploadProcess( MultipartHttpServletRequest multiRequest , String path ) 
-															throws Exception {
+															throws Exception { // 업로드 
 
 		MultipartFile file;
 		String save_dir = path;
@@ -266,6 +271,8 @@ public class FileController {
 		
 		// a.jpg  -->  /tmp/asfdasdfsadsadfxx11###.xxdfs
 		Iterator<Entry<String, MultipartFile>> itr = files.entrySet().iterator();
+		
+		
 		while (itr.hasNext()) {
 			Entry<String, MultipartFile> entry = itr.next();
 			file = entry.getValue();
@@ -287,9 +294,9 @@ public class FileController {
 	
 	@RequestMapping(value = "/downloadFile.do")
 	public void downloadFile(   String file,
-								HttpServletResponse response) throws Exception {
+								HttpServletResponse response) throws Exception { // 다운로드;;
 		
-		String path = ps.getString("uploadDir");
+		String path = ps.getString("uploadDir"); //  파일 주소 
 		
 		String uploadPath = path;
 		File uFile = new File(uploadPath, file);

@@ -110,7 +110,7 @@
 	<form id="frm">
 	<table style="width:600px;">
 	
-	    <input type="hidden" name="unq" value="${vo.unq}"/>
+	    <input type="hidden" name="unq" value="${vo.unq}"/> <!-- --unq 넘어 오는 것 -- -->
 	
 		<tr>
 			<th>제목</th>

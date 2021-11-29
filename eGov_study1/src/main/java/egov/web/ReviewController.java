@@ -99,6 +99,63 @@ public class ReviewController {
 		
 		return msg;
 	}
+	
+	@RequestMapping("commentModify.do")
+	@ResponseBody
+	public String updateComment( CommentVO vo ) throws Exception {
+		String msg ="ok";
+		
+		/// 전달 데이터 unq ,pass 암호 비교;
+		// select count (*) from review_comment where unq='12'  and pass ='1234';
+		// 0 or 1
+		int cnt_pass =reviewService.selectCommentPass(vo);
+		
+		if( cnt_pass  > 0 ) { // 일치 하는 데이터 가 있다면  업데이트(수정 )
+			
+			int result =   reviewService.updateComment(vo);
+			if(  result != 1 ) msg ="save_fail";
+					//업데이트 실패 ;;
+		}else {
+			
+			msg="pass_fail";
+			// 패스워드 다를경우 
+		}
+		
+		// success : null ;
+	
+		
+		
+		return msg;
+	}
+	
+	
+	@RequestMapping("commentDelete.do")
+	@ResponseBody
+	
+	public String deleteComment( CommentVO vo ) throws Exception {
+		String msg ="ok";
+		
+		/// 전달 데이터 unq ,pass 암호 비교;
+		// select count (*) from review_comment where unq='12'  and pass ='1234';
+		// 0 or 1
+		int cnt_pass =reviewService.selectCommentPass(vo);
+		
+		if( cnt_pass  > 0 ) { // 일치 하는 데이터 가 있다면  업데이트(수정 )
+			
+			int result =   reviewService.deleteComment(vo);
+			if(  result != 1 ) msg ="save_fail";
+					//업데이트 실패 ;;
+		}else {
+			
+			msg="pass_fail";
+			// 패스워드 다를경우 
+		}
+		
+		// success : null ;
+	
+
+		return msg;
+	}
 
 }
 

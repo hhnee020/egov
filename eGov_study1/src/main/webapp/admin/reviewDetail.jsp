@@ -17,17 +17,17 @@
   	<script src="https://code.jquery.com/ui/1.13.0/jquery-ui.js"></script>
   	
   	<script>
-	function fn_del(unq){
-		
-		$("#unq").val(unq);
-		$("#btn_comment_save").html("삭제");   
-		$("#name").val("");
+  	
+  	function fn_comm_delete(unq) {
+  		$("#unq").val(unq);
+  		$("#btn_comment_save").html("삭제");
+  		
+  		$("#name").val("");
   		$("#mark").val("3");
   		$("#comment1").val("");
-		//alert($("#btn_comment_save").text());  
-		alert(" 암호 입력후 삭제버튼을 클릭해주세요 ! ");
-	}
-	
+  		
+  		alert("암호 입력 후 삭제 버튼을 클릭해 주세요.");
+  	}
   	
   	
   	function fn_modify(unq,name,mark,comment1) {
@@ -36,52 +36,53 @@
   		$("#name").val(name);
   		$("#mark").val(mark);
   		$("#comment1").val(comment1);
-  		$("#btn_comment_save").html("수정");   //문구이름 변경 아이디값은 그대로 
+  		$("#btn_comment_save").html("수정");
   		
+  		//alert($("#mark option:selected").val());	
   	}
   	
   	$(function() {
+  		
+  		$("#btn_save").click(function(){
+  			location = "reviewModify.do?unq=${vo.unq}";
+  		});
+  		
+  		$("#btn_delete").click(function(){
+  			location = "passWrite.do?unq=${vo.unq}&type=review";
+  		});
 
   		$("#btn_comment_save").click(function(){
   			
-  			
+  		
   			var url = "commentSave.do";
-  			
+  			var msg = "등록";  // unq = 0; 설정
+
   			var unq = $("#unq").val();
-  			var msg="등록"; //unq =0;
+  			var button_text = $("#btn_comment_save").text();
   			
-  			var btn_text =$("#btn_comment_save").text();
-  			
-  			/////////////////////////////
-  			
-  			if( unq > 0 && btn_text == "수정"){
-  								url ="commentModify.do";// 0이 아니다;
-  								msg="수정";
-  			}// 수정;
-  			else if ( unq > 0 && btn_text=="삭제"){
-		  				url ="commentDelete.do";// 0이 아니다;
-						msg="삭제";
-  		}
-  			////////////////////////////////////////////////////////
-  			
-  			if( msg != "삭제" ){ // 삭제가 아닌 경우 
-		  			
-  			if( 	$("#comment1").val() =="") {
-		  				alert("코맨트를 입력해주세요.");
-		  				$("#comment1").focus();
-		  				return false;
-		  			}
-		  			
-		  	if( $("#name").val() =="") {
-		  				
-		  				alert("이름 를 입력해주세요.");
-		  				$("#name").focus();
-		  				return false;
-		  			}
-  			
+  			if( unq > 0 && button_text == "수정" ) {
+  				url = "commentModify.do";
+  				msg = "수정";
+  			} else if( unq > 0 && button_text == "삭제"  ) {
+  				url = "commentDelete.do";
+  				msg = "삭제";
   			}
+  			
+  			if( msg != "삭제" ) {
+	  			if( $("#comment1").val() == ""  ) {
+	  				alert("코맨트를 입력해주세요.");
+	  				$("#comment1").focus();
+	  				return false;
+	  			}
+	  			if( $("#name").val() == ""  ) {
+	  				alert("이름을 입력해주세요.");
+	  				$("#name").focus();
+	  				return false;
+	  			}
+  			}
+  			
   			if( $("#pass").val() == ""  ) {
-  				alert("암호 를 입력해주세요.");
+  				alert("암호를 입력해주세요.");
   				$("#pass").focus();
   				return false;
   			}
@@ -94,22 +95,16 @@
   				
   				datatype:"text",
   				success : function(data){
-  					
   					if(data == "ok") {
-  						alert(msg+"성공");
+  						alert(msg + "성공");
   						location.reload();
-  					}
-  					
-  					
-  					else if( data =="pass_fail") {
-  							alert(" 암호 가 일치 하지 않습니다 .");
-  					}else{
-  						alert(msg+"실패");
+  					} else if(data == "pass_fail"){
+  						alert("암호가 일치하지 않습니다.");
+  					} else {
+  						alert(msg + "실패");
   					}
   				},
-  				
   				error   : function() {
-  					
   					alert("전송오류");
   				}
   			});
@@ -200,7 +195,9 @@
 	<form id="frm">
 	
 	<input type="hidden" name="p_unq" value="${vo.unq}">
-	<input type="hidden" name="unq"  id="unq" value="0">
+	
+	<input type="hidden" name="unq" id="unq" value="0">
+	
 	<table style="width:600px;margin-top:20px;">
 		<colgroup>
 			<col width="*"/>
@@ -281,17 +278,15 @@
 			<td>
 			<a href="javascript:fn_modify('${result.unq}','${result.name}','${result.mark}','${result.comment1}')">M</a>
 			/
-			<a href="javascript:fn_del('${result.unq}')">D</a></td>
+			<a href="javascript:fn_comm_delete('${result.unq}')">D</a></td>
 		</tr>
-		
-		
 	</c:forEach>
-	<p>
-		&nbsp;
-		</p>
 	
 	</table>
 	
+	<p>
+	&nbsp;
+	</p>
 	
 	</div>
 	

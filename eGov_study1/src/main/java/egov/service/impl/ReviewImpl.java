@@ -80,6 +80,23 @@ public class ReviewImpl implements ReviewService {
 		return reviewDAO.deleteComment(vo);
 	}
 
+	@Override
+	public int selectReviewPass(ReviewVO vo) throws Exception {
+		// TODO Auto-generated method stub
+		return  reviewDAO.selectReviewPass(vo);
+	}
+
+	@Override
+	public int deleteCommentAll(int p_unq) throws Exception {
+		// TODO Auto-generated method stub
+		return  reviewDAO.deleteCommentAll(p_unq);
+	}
+
+	
+	
+
+
+
 }
 
 

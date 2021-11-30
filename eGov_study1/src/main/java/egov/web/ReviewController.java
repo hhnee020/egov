@@ -40,6 +40,51 @@ public class ReviewController {
 		
 		return msg;
 	}
+	
+	@RequestMapping("reviewModifySave.do")
+	@ResponseBody
+	public String updateReview( ReviewVO vo ) throws Exception {
+		
+		String msg = "ok";
+		// 암호 체크 서비스 실행
+		int cnt_pass = reviewService.selectReviewPass(vo);
+		
+		if( cnt_pass == 0 ) {
+			msg = "pass_fail";
+		} else {
+			// 변경(수정) 처리 서비스 실행
+			int result = reviewService.updateReview(vo);
+			
+			if(result == 0) msg = "save_fail";
+		}
+		
+		return msg;
+	}
+	
+	@RequestMapping("reviewDelete.do")
+	@ResponseBody
+	public String deleteReview( ReviewVO vo ) throws Exception {
+	
+		String msg = "ok";
+		// 암호 확인 서비스 실행
+		int cnt_pass = reviewService.selectReviewPass(vo);
+		
+		if( cnt_pass == 0 ) {
+			msg = "pass_fail";
+		
+		} else {  // 암호 일치
+			
+			// 삭제(본문) 서비스 실행   delete from review_board where unq='12';
+			int result1 = reviewService.deleteReview(vo); // unq , pass
+
+			// 코멘트 삭제 서비스 실행    delete from review_comment where p_unq='12';
+			int result2 = reviewService.deleteCommentAll(vo.getUnq());
+		}
+		
+		return msg;
+		
+	}
+		
 
 	@RequestMapping("reviewList.do")
 	public String selectReviewList( ReviewVO vo, Model model ) throws Exception {
@@ -88,6 +133,17 @@ public class ReviewController {
 		return "admin/reviewDetail";
 	}
 	
+	@RequestMapping("reviewModify.do")
+	public String selectReviewModify( ReviewVO vo, Model model ) 
+												throws Exception {
+		// 상세보기 서비스 실행
+		vo = reviewService.selectReviewDetail(vo);
+		model.addAttribute("vo",vo);
+		
+		return "admin/reviewModify";
+	}
+
+	
 	@RequestMapping("commentSave.do")
 	@ResponseBody
 	public String insertComment( CommentVO vo ) throws Exception {
@@ -103,59 +159,45 @@ public class ReviewController {
 	@RequestMapping("commentModify.do")
 	@ResponseBody
 	public String updateComment( CommentVO vo ) throws Exception {
-		String msg ="ok";
+
+		String msg = "ok";
+		// 암호 비교 서비스 실행  (전달데이터 : unq, pass)
+		// select count(*) from review_comment where unq='12' and pass='1234';  
+		// 결과 : 0 or 1
+		int cnt_pass = reviewService.selectCommentPass(vo);
 		
-		/// 전달 데이터 unq ,pass 암호 비교;
-		// select count (*) from review_comment where unq='12'  and pass ='1234';
-		// 0 or 1
-		int cnt_pass =reviewService.selectCommentPass(vo);
-		
-		if( cnt_pass  > 0 ) { // 일치 하는 데이터 가 있다면  업데이트(수정 )
-			
-			int result =   reviewService.updateComment(vo);
-			if(  result != 1 ) msg ="save_fail";
-					//업데이트 실패 ;;
-		}else {
-			
-			msg="pass_fail";
-			// 패스워드 다를경우 
+		if( cnt_pass > 0 ) {
+			int result = reviewService.updateComment(vo);
+			if(result != 1) msg = "save_fail";
+		} else {
+			msg = "pass_fail";
 		}
-		
-		// success : null ;
-	
-		
-		
-		return msg;
-	}
-	
-	
-	@RequestMapping("commentDelete.do")
-	@ResponseBody
-	
-	public String deleteComment( CommentVO vo ) throws Exception {
-		String msg ="ok";
-		
-		/// 전달 데이터 unq ,pass 암호 비교;
-		// select count (*) from review_comment where unq='12'  and pass ='1234';
-		// 0 or 1
-		int cnt_pass =reviewService.selectCommentPass(vo);
-		
-		if( cnt_pass  > 0 ) { // 일치 하는 데이터 가 있다면  업데이트(수정 )
-			
-			int result =   reviewService.deleteComment(vo);
-			if(  result != 1 ) msg ="save_fail";
-					//업데이트 실패 ;;
-		}else {
-			
-			msg="pass_fail";
-			// 패스워드 다를경우 
-		}
-		
-		// success : null ;
-	
 
 		return msg;
 	}
+	
+	@RequestMapping("commentDelete.do")
+	@ResponseBody
+	public String deleteComment( CommentVO vo ) throws Exception {
+
+		String msg = "ok";
+		// 암호 비교 서비스 실행
+		int cnt_pass = reviewService.selectCommentPass(vo);
+		
+		if( cnt_pass > 0 ) { // 암호일치
+			// 코멘트 삭제 서비스 실행
+			int result = reviewService.deleteComment(vo);
+			if(result != 1) msg = "save_fail";
+		} else {
+			msg = "pass_fail";
+		}
+
+		return msg;
+		
+		// 6,7 --> 진행(중)
+		
+	}
+
 
 }
 

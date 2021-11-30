@@ -11,7 +11,10 @@ import egov.service.CommentVO;
 import egov.service.ReviewVO;
 import egovframework.rte.psl.dataaccess.EgovAbstractDAO;
 
-
+/**
+ * @author ezen
+ *
+ */
 @Repository("reviewDAO")
 public class ReviewDAO  extends EgovAbstractDAO {
 
@@ -48,18 +51,24 @@ public class ReviewDAO  extends EgovAbstractDAO {
 	}
 
 	public int selectCommentPass(CommentVO vo) {
-		// TODO Auto-generated method stub
 		return (int) select("reviewDAO.selectCommentPass",vo);
 	}
 
 	public int updateComment(CommentVO vo) {
-		// TODO Auto-generated method stub
 		return update("reviewDAO.updateComment",vo);
 	}
 
 	public int deleteComment(CommentVO vo) {
+		return delete("reviewDAO.deleteComment",vo);
+	}
+
+	public int selectReviewPass(ReviewVO vo) {
+		return (int) select("reviewDAO.selectReviewPass",vo);
+	}
+
+	public int deleteCommentAll(int p_unq) {
 		// TODO Auto-generated method stub
-		return delete("reviewDAO.deleteComment", vo);
+		return delete("reviewDAO.deleteCommentAll",p_unq);
 	}
 
 }

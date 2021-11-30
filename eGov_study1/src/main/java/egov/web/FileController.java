@@ -360,9 +360,10 @@ public class FileController {
 	}
 	
 	@RequestMapping("passWrite.do")
-	public String passWrite(FileVO vo , Model model ) throws Exception {
+	public String passWrite(FileVO vo , Model model , String type) throws Exception {
 		
 		model.addAttribute("unq",vo.getUnq());
+		model.addAttribute("type", type);
 		model.addAttribute("filename",vo.getFilename());
 		return "admin/passWrite";
 	}

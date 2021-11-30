@@ -21,23 +21,41 @@
 		
   		$("#btn_del").click(function(){  
   			
+  			var url="fileboardDelete.do"; // 디 폴 트 값 
+  			var loc="fileboardList.do";
+  			
+  			var type = "${type }";
+  			
+  			if( type == "review"){
+  				
+  				url ="reviewDelete.do"; // 일 경우 
+  				loc="reviewList.do";
+  			}
+  			
+  			
   			if( $.trim($("#pass").val()) == "" ) {
   				alert("암호를 입력해주세요.");
   				$("#pass").focus();
   				return false;
   			}
   			
+  			
+  			
   			var formdata = $("#frm").serialize();
   			
   			$.ajax({
   				type : "POST",
-  				url  : "fileboardDelete.do",
+  				url  : url,
   				data : formdata,
   				
   				datatype : "text",
   				success : function(data) {
   					if(data == "ok") {
   						alert("삭제완료");
+  						
+  						location=loc;
+  						
+  	
   					} else if(data == "pass_fail") {
   						alert("암호가 일치하지 않습니다.");
   					} else {
@@ -51,6 +69,9 @@
   		});
   	});
   	</script>
+  	
+  	
+  	
 	
 </head>
 
@@ -89,6 +110,7 @@
 	
 	<input type="hidden" name="unq" value="${unq }" />
 	<input type="hidden" name="filename" value="${filename }" />
+	<input type="hidden" name="type" value="${type }" />
 	
 	<table style="width:600px;">
 		<tr>

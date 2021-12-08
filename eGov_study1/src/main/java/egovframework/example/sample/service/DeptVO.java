@@ -2,14 +2,9 @@ package egovframework.example.sample.service;
 
 public class DeptVO {
 
-	/*
-	 * 객체지향 (은늑화(캡슐화), 추상, 상속, 다형성 ) 
-	 */
-	// 접근지정자
-	private String deptno;  // 인스턴스(객체)변수
-	private String dname;
-	private String loc;
-	//private String[] hobby;
+	String deptno;
+	String dname;
+	String loc;
 	
 	public String getDeptno() {
 		return deptno;
@@ -29,5 +24,5 @@ public class DeptVO {
 	public void setLoc(String loc) {
 		this.loc = loc;
 	}
-
+	
 }

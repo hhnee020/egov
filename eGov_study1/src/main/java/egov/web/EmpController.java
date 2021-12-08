@@ -1,5 +1,6 @@
 package egov.web;
 
+import java.util.Calendar;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -10,132 +11,142 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import egov.service.EmpService;
 import egov.service.EmpVO;
-import egov.service.impl.EmpImpl;
 import egovframework.example.sample.service.EgovSampleService;
 
 @Controller
 public class EmpController {
-
+	
 	@Resource(name="empService")
 	private EmpService empService;
-
-	@Resource(name = "sampleService")
-	private EgovSampleService sampleService;
 	
+	@Resource(name="sampleService")
+	private EgovSampleService sampleService;
+
 	@RequestMapping(value="empList.do")
-	public String selectEmpList( EmpVO vo, Model model ) 
-														throws Exception {
-		// 현페이지번호
-		int page_no  = vo.getPage_no();
+	public String selectEmpList(EmpVO vo, Model model) throws Exception {
 		
-		// (1)->1 , (2)->11 , (3)->21
-		int start_no = (page_no-1)*10 + 1; 
-		int end_no   = start_no+9;
+		/*
+		 * pageNo = ((pageNo == null || pageNo == "0") ? "1" : pageNo); 
+		 * int pagenumber =
+		 * Integer.parseInt(pageNo);
+		 */
+		int page_no = vo.getPage_no();
+		System.out.println(page_no);
 
-		vo.setStart_no(start_no); // SQL 시작번호
-		vo.setEnd_no(end_no);     // SQL 끝번호
-
+		System.out.println("컨트롤러 접근");
+		int totalCount = empService.selectEmpTotal();
+		System.out.println("컨트롤러 : " + totalCount);
+		
+		int totalPage = (int) Math.ceil((double)totalCount/10);
+		
+		int s_index = (page_no-1)*10; //1이 들어오면 1-1 = 0 * 10 = 0 sql 데이터를 0번부터
+									  //2가 들어오면 2-1 = 1 * 10 = 10 sql 데이터를 10번부터
+		int e_index = (s_index+9);
+		
+		vo.setS_index(totalCount-s_index);
+		vo.setE_index(totalCount-e_index);
+		
+		
+		
+	
 		List<?> list = empService.selectEmpList(vo);
-		int total    = empService.selectEmpTotal();
-
-		int totalPage = (int) Math.ceil( (double)total/10 );
+		model.addAttribute("totalPage", totalPage);
+		model.addAttribute("totalCount",totalCount);
+		model.addAttribute("list", list);
 		
-		// (1)-13, (2)-3
-		int rownum = total - (page_no-1)*10; 
-
-		model.addAttribute("totalPage",totalPage); // 총 페이지 번호
-		model.addAttribute("total",total);    // 총 데이터 값
-		model.addAttribute("list",list);      // 페이지 출력 목록
-		model.addAttribute("rownum",rownum);  // 출력 페이지 행 시작 번호
 		return "emp/empList";
+		
 	}
-
-	@RequestMapping(value="empWrite.do")
-	public String empWrite(Model model) throws Exception {
+	
+	@RequestMapping(value = "empWrite.do")
+	public String empWrite(Model model,EmpVO vo) throws Exception {
 		
-		int empno = empService.selectEmpEmpno();
-		model.addAttribute("empno",empno);
+		int maxnumber = empService.maxcount();
+		List<?> deptlist= sampleService.selectDeptList();
+		List<?> joblist = empService.selectJobList();
+		System.out.println("deptlist 클래스 "+deptlist.get(0).getClass());
+		System.out.println("joblist 클래스"+joblist.get(0).getClass());
 		
-		List<?> deptList = sampleService.selectDeptList();
-		model.addAttribute("deptList",deptList);
-
-		List<?> jobList = empService.selectEmpJobList();
-		model.addAttribute("jobList",jobList);
-		
+		model.addAttribute("joblist",joblist);
+		model.addAttribute("deptlist", deptlist);
+		model.addAttribute("maxnumber", maxnumber);
 		return "emp/empWrite";
 	}
+	
 
-	@RequestMapping(value="empWriteSave.do")
-	public String insertEmp(EmpVO vo) throws Exception {
-		
-		// 월/일/년->년/월/일
-		String date1 = vo.getHiredate();
-		if( date1 != null && !date1.equals("") ) {
-			String[] array = date1.split("/");
-			date1 = array[2]+"/"+array[0]+"/"+array[1];
-			vo.setHiredate(date1);
+	@RequestMapping(value = "empWriteSave.do")
+	public String empWriteSave(EmpVO vo) throws Exception {
+
+		String date;
+		if(vo.getHiredate() == null || vo.getHiredate().equals("")) {
+			Calendar cal = Calendar.getInstance();
+			date = cal.get(Calendar.YEAR)+"/"+(cal.get(Calendar.MONTH)+1)+"/"+cal.get(Calendar.DATE);
+		} else {
+			String datelist[] = vo.getHiredate().split("/");
+			date = datelist[2]+"/"+datelist[0]+"/"+datelist[1];
 		}
+		vo.setHiredate(date);
 		
 		String result = empService.insertEmp(vo);
-		
-		
+		if(result == null) {
+			System.out.println("저장성공");
+		} else {
+			System.out.println("저장실패");
+		}
 		return "redirect:empList.do";
 	}
 	
-	@RequestMapping("empModify.do")
-	public String selectEmpModify(int empno , Model model) throws Exception {
-		
-		List<?> deptList = sampleService.selectDeptList();
-		model.addAttribute("deptList",deptList);
+	@RequestMapping(value ="empDetail.do")
+	public String empDetail(EmpVO vo, Model model) throws Exception {
+		EmpVO empvo = empService.viewEmpDetail(vo);
+		model.addAttribute("emp", empvo);
+		return "emp/empDetail";
+	}
+	
 
-		List<?> jobList = empService.selectEmpJobList();
-		model.addAttribute("jobList",jobList);
+	@RequestMapping(value ="empModify.do")
+	public String empModify(EmpVO vo, Model model) throws Exception {
 		
-		EmpVO vo = empService.selectEmpDetail(empno);
-		model.addAttribute("vo",vo);
+
+		List<?> deptlist= sampleService.selectDeptList();
+		List<?> joblist = empService.selectJobList();
 		
+		
+		model.addAttribute("joblist",joblist);
+		model.addAttribute("deptlist", deptlist);
+		
+		EmpVO empvo = empService.viewEmpDetail(vo);
+		
+		/*
+		 * String date[] = empvo.getHiredate().split(" ")[0].split("-");
+		 * empvo.setHiredate(date[1]+"/"+date[2]+"/"+date[0]);
+		 */
+		
+		
+		model.addAttribute("emp", empvo);
 		return "emp/empModify";
 	}
 	
-	@RequestMapping("empModifySave.do")
-	public String updateEmp( EmpVO vo ) throws Exception {
-		
-		// 월/일/년->년/월/일
-		String date1 = vo.getHiredate();
-		if( date1 != null && !date1.equals("") ) {
-			String[] array = date1.split("/");
-			date1 = array[2]+"/"+array[0]+"/"+array[1];
-			vo.setHiredate(date1);
+	@RequestMapping(value ="empModifySave.do")
+	public String empModifySave(EmpVO vo) throws Exception {
+
+		String date;
+		if(vo.getHiredate() == null || vo.getHiredate().equals("")) {
+			Calendar cal = Calendar.getInstance();
+			date = cal.get(Calendar.YEAR)+"/"+(cal.get(Calendar.MONTH)+1)+"/"+cal.get(Calendar.DATE);
+		} else {
+			String datelist[] = vo.getHiredate().split("/");
+			date = datelist[2]+"/"+datelist[0]+"/"+datelist[1];
 		}
+		vo.setHiredate(date);
+		
 		int result = empService.updateEmp(vo);
-		
-		System.out.println("결과 : " +  result);
-		
-		/*
-		 * if( result == 1 ) { System.out.println("수정 처리 완료"); } else {
-		 * System.out.println("수정 처리 실패"); }
-		 */
-		
-		return "redirect:empList.do";
-	}
-	
-	@RequestMapping("empDelete.do")
-	public String deleteEmp(int empno) throws Exception {
-		
-		int result = empService.deleteEmp(empno);
-		
-		if( result == 1 ) {
-			System.out.println("삭제 처리 완료"); }
-		else {
-			System.out.println("삭제 처리 실패");
+		if(result >= 1) {
+			System.out.println("수정완료");
+		} else {
+			System.out.println("수정 실패");
 		}
-			 
+		
 		return "redirect:empList.do";
 	}
-	
-	
-	
 }
-
-
-

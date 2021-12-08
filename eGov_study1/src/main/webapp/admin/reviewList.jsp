@@ -157,7 +157,7 @@ function fn_delete(unq) {
 		<tr align="center">
 			<td>${row_no } </td>
 			<td align="left">
-	<a href="reviewDetail.do?unq=${result.unq }">${result.title}(${result.commcnt})</a></td>
+	<a href="reviewDetail.do?unq=${result.unq }&s_field=${s_field}&s_text=${s_text}">${result.title }</a></td>
 			<td>${result.name }</td>
 			<td>${result.rdate }</td> 
 			<td>${result.udate }</td>

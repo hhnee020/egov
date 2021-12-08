@@ -106,34 +106,33 @@ public class SampleDAO extends EgovAbstractDAO {
 	}
 
 	public String insertDept(DeptVO vo) {
-		
+		// TODO Auto-generated method stub
 		return (String) insert("sampleDAO.insertDept",vo);
 	}
 
 	public List<?> selectDeptList() {
+		// TODO Auto-generated method stub
 		return list("sampleDAO.selectDeptList");
 	}
 
 	public DeptVO selectDeptDetail(int deptno) {
+		// TODO Auto-generated method stub
 		return (DeptVO) select("sampleDAO.selectDeptDetail",deptno);
 	}
 
-	public int updateDept(DeptVO vo) {
-		return  update("sampleDAO.updateDept",vo);
+	public int modifySaveDept(DeptVO deptvo) {
+		// TODO Auto-generated method stub
+		return update("sampleDAO.modifySave",deptvo);
 	}
 
-	public int deleteDept(DeptVO vo) {
-		return delete("sampleDAO.deleteDept",vo);
+	public int deleteDept(int deptno) {
+		// TODO Auto-generated method stub
+		return delete("sampleDAO.deleteDept",deptno);
 	}
+
+	/*
+	 * public List<?> selectDept() { // TODO Auto-generated method stub return
+	 * list("sampleDAO.selectDept"); }
+	 */
 
 }
-
-
-
-
-
-
-
-
-
-

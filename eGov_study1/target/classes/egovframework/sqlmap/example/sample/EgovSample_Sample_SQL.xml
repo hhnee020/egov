@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
-<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
 
 <sqlMap namespace="Sample">
 
-	<typeAlias  alias="egovMap"  type="egovframework.rte.psl.dataaccess.util.EgovMap"/>
+	<typeAlias  alias="egovMap" type="egovframework.rte.psl.dataaccess.util.EgovMap"/>
 	<typeAlias  alias="searchVO" type="egovframework.example.sample.service.SampleDefaultVO"/>
-	<typeAlias  alias="deptVO"   type="egovframework.example.sample.service.DeptVO"/>
+	<typeAlias  alias="deptVO" type="egovframework.example.sample.service.DeptVO"/>
 
 	<resultMap id="sample" class="egovframework.example.sample.service.SampleVO">
 		<result property="id" column="id"/>
@@ -16,29 +15,27 @@
 		<result property="regUser" column="reg_user"/>
 	</resultMap>
 
-
 	<insert id="sampleDAO.insertDept">
 		INSERT INTO dept(deptno,dname,loc)
-			              VALUES(#deptno#,#dname#,#loc#)
+						VALUES(#deptno#,#dname#,#loc#)
 	</insert>
 	
 	<select id="sampleDAO.selectDeptList" resultClass="egovMap">
-		SELECT deptno,dname,loc FROM dept
+		SELECT deptno,dname,loc FROM dept order by deptno desc
 	</select>
 	
 	<select id="sampleDAO.selectDeptDetail" resultClass="deptVO">
-		SELECT deptno,dname,loc FROM dept WHERE deptno=#deptno#
+		SELECT deptno,dname,loc FROM dept WHERE deptno = #deptno#
 	</select>
 	
-	<update id="sampleDAO.updateDept">
-		UPDATE dept SET dname=#dname#, loc=#loc#   WHERE deptno=#deptno#
+	<update id="sampleDAO.modifySave">
+		UPDATE dept SET dname=#dname# , loc=#loc# WHERE deptno = #deptno#
 	</update>
 	
+	
 	<delete id="sampleDAO.deleteDept">
-		delete from dept where deptno=#deptno#
+		DELETE FROM dept WHERE deptno=#deptno#
 	</delete>
-	
-	
 
 	<insert id="sampleDAO.insertSample">
 		<![CDATA[
@@ -96,7 +93,7 @@
 				NAME LIKE '%' || #searchKeyword# || '%'
 			</isEqual>
 			ORDER BY ID DESC
-			<!-- LIMIT #recordCountPerPage# OFFSET #firstIndex#	 -->	
+			LIMIT #recordCountPerPage# OFFSET #firstIndex#		
 	</select>
 	
 	<select id="sampleDAO.selectSampleListTotCnt" parameterClass="searchVO" resultClass="int">

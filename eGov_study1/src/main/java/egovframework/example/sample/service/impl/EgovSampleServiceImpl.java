@@ -15,10 +15,7 @@
  */
 package egovframework.example.sample.service.impl;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import egovframework.example.sample.service.DeptVO;
 import egovframework.example.sample.service.EgovSampleService;
@@ -147,39 +144,42 @@ public class EgovSampleServiceImpl extends EgovAbstractServiceImpl implements Eg
 
 	@Override
 	public String insertDept(DeptVO vo) throws Exception {
+		// TODO Auto-generated method stub
 		return sampleDAO.insertDept(vo);
 	}
 
 	@Override
 	public List<?> selectDeptList() throws Exception {
+		// TODO Auto-generated method stub
 		return sampleDAO.selectDeptList();
 	}
 
 	@Override
 	public DeptVO selectDeptDetail(int deptno) throws Exception {
+		
 		return sampleDAO.selectDeptDetail(deptno);
 	}
 
 	@Override
-	public int updateDept(DeptVO vo) throws Exception {
-
-		return sampleDAO.updateDept(vo);
+	public int modifySaveDept(DeptVO deptvo) throws Exception {
+		// TODO Auto-generated method stub
+		return sampleDAO.modifySaveDept(deptvo);
 	}
 
 	@Override
-	public int deleteDept(DeptVO vo) throws Exception {
-		
-		return sampleDAO.deleteDept(vo);
+	public int deleteDept(int deptno) throws Exception {
+		// TODO Auto-generated method stub
+		return sampleDAO.deleteDept(deptno);
 	}
 
+
+
+	/*
+	 * @Override 
+	 * public List<?> selectDept() throws Exception { // TODO Auto-generated method stub 
+	 * return sampleDAO.selectDept(); 
+	 * }
+	 */
+	
+
 }
-
-
-
-
-
-
-
-
-
-

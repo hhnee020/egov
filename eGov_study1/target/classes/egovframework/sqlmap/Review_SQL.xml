@@ -43,10 +43,9 @@
 									to_char(udate,'yyyy/mm/dd') udate,
 									email,
 									sns,
-									hits,
-									( select count(*) from review_comment where review_comment.p_unq = rv.unq ) commcnt     
+									hits
 							FROM
-									review_board  rv
+									review_board
 							ORDER BY
 									unq DESC ) a ) b
 			WHERE 
@@ -77,7 +76,11 @@
 				unq=#unq#
 	
 	</select>
-
+	
+	
+	
+	
+	
 	<update id="reviewDAO.updateReview">
 	
 	</update>
@@ -85,50 +88,6 @@
 	<delete id="reviewDAO.deleteReview">
 	
 	</delete>
-
-	<insert id="reviewDAO.insertComment">
-	
-		INSERT INTO review_comment (
-								unq,
-								p_unq,
-								name,
-								pass,
-								mark,
-								comment1,
-								rdate )
-						VALUES (
-								review_comment_seq.nextval,
-								#p_unq#,
-								#name#,
-								#pass#,
-								#mark#,
-								#comment1#,
-								sysdate )
-	</insert>
-	
-	<select id="reviewDAO.selectCommList" resultClass="egovMap">
-	
-		SELECT 	unq,
-				p_unq,
-				name,
-				decode(mark,'5','최고','4','좋음','3','보통','2','부족','1','나쁨' ) markmsg,
-				<!-- decode(mark,'5','★★★★★','4','★★★★☆','3','★★★☆☆','2','★★☆☆☆','1','★☆☆☆☆' ) mark, -->
-				mark,
-				comment1,
-				to_char(rdate,'mm.dd') rdate
-		FROM
-				review_comment
-		WHERE
-				p_unq=#unq#
-	
-	</select>
 	
 
 </sqlMap>
-
-
-
-
-
-
-

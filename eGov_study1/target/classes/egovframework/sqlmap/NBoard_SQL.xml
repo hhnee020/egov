@@ -1,124 +1,124 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
-
-<sqlMap namespace="nboard_space">
-
-	<typeAlias  alias="egovMap"  type="egovframework.rte.psl.dataaccess.util.EgovMap"/>
-	<typeAlias  alias="nboardVO" type="egov.service.NBoardVO"/>
-
+<sqlMap namespace="nboardspace">
+	<typeAlias alias="nboardVO" type="egov.service.NBoardVO"/>
+	<typeAlias  alias="egovMap" type="egovframework.rte.psl.dataaccess.util.EgovMap"/>
+	
 	<insert id="nboardDAO.insertNBoard">
-		<![CDATA[
-		INSERT INTO nboard(  
-						unq,
-						title,
-						pass,
-						name,
-						content,
-						rdate,
-						udate )
-						
-			  VALUES (  nboard_seq.nextval,
-						'$title$',
-						'1234',
-						'$name$',
-						'$content$',
-						sysdate,
-						sysdate )
+	<![CDATA[
+		INSERT INTO nboard(unq,title,pass,name,content,rdate,udate) 
+		values (nboard_seq.nextval,#title#,'1234',#name#,#content#,sysdate,sysdate)
 		]]>
 	</insert>
 	
-	<select id="nboardDAO.selectNBoardList" resultClass="egovMap">
-		SELECT b.* FROM  (	
-			SELECT rownum rn, a.* FROM  (
-			     SELECT   	unq,
-			     			title,
-			     		 	name,
-			     			to_char(rdate,'yyyy/mm/dd') rdate,
-			     			to_char(udate,'yyyy/mm/dd') udate,
-			     			hits 
-			     FROM nboard 
-			     
-			     <isNotNull property="s_text">
-			     	<isNotEmpty property="s_text">
-			    		<isNotEqual property="s_field" compareValue="rdate">
-			     			WHERE $s_field$ LIKE '%$s_text$%'
-			     		</isNotEqual>
-			     		<isEqual property="s_field" compareValue="rdate">
-			     			WHERE to_char(rdate,'yyyy-mm-dd') LIKE '%$s_text$%'
-			     		</isEqual>
-			     	</isNotEmpty>
-			     </isNotNull>
-			     
-			     ORDER BY unq DESC ) a  ) b
-		
-		WHERE   <isNotNull property="unq1">
-					unq > $unq1$
-		        </isNotNull>
-		        
-		        <isNotNull property="unq2">
-					unq <![CDATA[<]]> $unq2$ AND rownum <![CDATA[<]]> 2
-		        </isNotNull>
+	<!-- <select id="nboadDAO.selectNBoardList" resultClass="egovMap">
+	<![CDATA[
+		SELECT b.* from (
+			SELECT  a.* from (
+				SELECT rownum rn,unq,title,name,rdate,hits FROM nboard ORDER by rn desc) a ) b
+		WHERE rn >= #sNo# AND rn <= #eNo#
+	]]> 
+	</select>-->
+	 <!-- 컨트롤러에서 rownum 사용 시 페이지에서 가감처리  -->
+	
+	 <!--  <select id="nboadDAO.selectNBoardList" resultClass="egovMap">
+	
+		SELECT b.* from (
+			SELECT  rownum rn, a.* from (
+				SELECT unq,title,name,to_char(rdate,'yyyy-mm-dd') rdate ,udate,hits FROM  nboard
 				
-				<isNotNull property="unq3">
-					rn >= #s_no#  AND rn <![CDATA[<=]]> #e_no#
+				<isNotNull property="s_text">
+					<isNotEmpty property="s_text">
+						<isNotEqual property="s_field" compareValue="rdate">
+							WHERE $s_field$ LIKE '%$s_text$%'
+						</isNotEqual>
+						<isEqual property="s_field" compareValue="rdate">
+							WHERE to_char(rdate,'yyyy-mm-dd') LIKE '%$s_text$%'
+						</isEqual>
+					</isNotEmpty>
 				</isNotNull>
+				
+				
+				 ORDER by unq asc) a order by rn desc) b
+		WHERE rn <![CDATA[<=]]> #sNo# AND rn >= #eNo#
+	
+	</select> -->
+	
+	 <select id="nboadDAO.selectNBoardList" resultClass="egovMap">
+		SELECT b.* from (
+			SELECT rownum rn, a.* from (
+				SELECT unq,title,name,to_char(rdate,'yyyy-mm-dd') rdate,udate,hits,
+					lag(unq) over (order by unq) beforeid,
+					lead(unq) over (order by unq) nextid
+					from nboard
+					
+				<isNotNull property="s_text">
+					<isNotEmpty property="s_text">
+						<isNotEqual property="s_field" compareValue="rdate">
+							WHERE $s_field$ LIKE '%$s_text$%'
+						</isNotEqual>
+						<isEqual property="s_field" compareValue="rdate">
+							WHERE to_char(rdate,'yyyy-mm-dd') LIKE '%$s_text$%'
+						</isEqual>
+					</isNotEmpty>
+				</isNotNull>
+			) a ORDER BY rn desc
+		) b
+		WHERE rn <![CDATA[<=]]> #sNo# AND rn >= #eNo#
 	</select>
 	
-	<select id="nboardDAO.selectNBoardTotal"  resultClass="java.lang.Integer">
+	<select id="nboardDAO.selectNBoardTotal" resultClass="java.lang.Integer">
+		SELECT COUNT(*) FROM nboard
 		
-		  SELECT COUNT(*) FROM nboard 
 				<isNotNull property="s_text">
-			     	<isNotEmpty property="s_text">
-			    		<isNotEqual property="s_field" compareValue="rdate">
-			     			
-			     			WHERE $s_field$ LIKE '%$s_text$%'
-			     		
-			     		</isNotEqual>
-			     		<isEqual property="s_field" compareValue="rdate">
-			     			WHERE to_char(rdate,'yyyy-mm-dd') LIKE '%$s_text$%'
-			     		</isEqual>
-			     	</isNotEmpty>
-			     </isNotNull>
+					<isNotEmpty property="s_text">
+						<isNotEqual property="s_field" compareValue="rdate">
+							WHERE $s_field$ LIKE '%$s_text$%'
+						</isNotEqual>
+						<isEqual property="s_field" compareValue="rdate">
+							WHERE to_char(rdate,'yyyy-mm-dd') LIKE '%$s_text$%'
+						</isEqual>
+					</isNotEmpty>
+				</isNotNull>
+				
 	</select>
 	
 	<select id="nboardDAO.selectNBoardDetail" resultClass="nboardVO">
-		SELECT 
-				title,
-				name,
-				content,
-				to_char(rdate,'yyyy/mm/dd') rdate,
-				to_char(udate,'yyyy/mm/dd') udate,
-				hits 
-		FROM nboard 
-					WHERE unq=#unq#
+	
+		SELECT b.* from (
+			SELECT rownum rn, a.* from (
+				SELECT unq,title,name,to_char(rdate,'yyyy-mm-dd') rdate,udate,hits,content,
+					lag(unq) over (order by unq) beforeid,
+					lead(unq) over (order by unq) nextid
+					from nboard
+					
+				<isNotNull property="s_text">
+					<isNotEmpty property="s_text">
+						<isNotEqual property="s_field" compareValue="rdate">
+							WHERE $s_field$ LIKE '%$s_text$%'
+						</isNotEqual>
+						<isEqual property="s_field" compareValue="rdate">
+							WHERE to_char(rdate,'yyyy-mm-dd') LIKE '%$s_text$%'
+						</isEqual>
+					</isNotEmpty>
+				</isNotNull>
+			) a ORDER BY rn desc
+		) b
+		WHERE unq = #unq#
 	</select>
 	
 	<update id="nboardDAO.updateNBoard">
-		UPDATE nboard  
-			SET
-				title=#title#,
-				name=#name#,
-				content=#content#,
-				udate=sysdate
-			WHERE
-				unq=#unq#
+		UPDATE nboard SET title=#title#, name =#name# , content= #content# , udate = sysdate WHERE unq = #unq#
 	</update>
 	
-	<update id="nboardDAO.updateNBoardHits">
-		UPDATE nboard SET  hits=hits+1  WHERE unq=#unq#
-	</update>
-
 	<delete id="nboardDAO.deleteNBoard">
-		DELETE FROM nboard WHERE unq=#unq#
-	</delete>
-
-	<delete id="nboardDAO.deleteNBoardAll">
-		DELETE FROM nboard WHERE unq in ($values$)
+		delete from nboard where unq = #unq#
 	</delete>
 	
+	<delete id="nboardDAO.deleteAllNBoard" parameterClass="java.util.HashMap" >
+		DELETE from nboard
+		<iterate open="(" close=")" property="idList" conjunction="," prepend="WHERE unq IN">
+			#idList[]#
+		</iterate>
+	</delete>
 </sqlMap>
-
-
-
-
-

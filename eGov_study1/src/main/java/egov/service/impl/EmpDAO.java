@@ -1,4 +1,4 @@
-package egov.service.impl;
+package egov.service.Impl;
 
 import java.util.List;
 
@@ -8,42 +8,47 @@ import egov.service.EmpVO;
 import egovframework.rte.psl.dataaccess.EgovAbstractDAO;
 
 @Repository("empDAO")
-public class EmpDAO  extends EgovAbstractDAO  {
+public class EmpDAO extends EgovAbstractDAO{
+
 	public List<?> selectEmpList(EmpVO vo) {
+//		System.out.println("select DAO");
+		// TODO Auto-generated method stub
 		return list("empDAO.selectEmpList",vo);
 	}
 
 	public String insertEmp(EmpVO vo) {
+		// TODO Auto-generated method stub
 		return (String) insert("empDAO.insertEmp",vo);
 	}
 
-	public int selectEmpTotal() {
-		return (int) select("empDAO.selectEmpTotal");
+	public EmpVO viewEmpDetail(EmpVO vo) {
+		// TODO Auto-generated method stub
+		return (EmpVO) select("empDAO.viewEmpDetail",vo);
 	}
 
-	public EmpVO selectEmpDetail(int empno) {
-		return (EmpVO) select("empDAO.selectEmpDetail",empno);
+	public int selectEmpTotals() {
+		// TODO Auto-generated method stub
+		System.out.println("DAO 접근");
+		int testDAO = (int) select("empDAO.selectEmpTotals");
+//		return (int) select("empDAO.selectEmpTotals");
+		System.out.println("DAO : " + testDAO);
+		return testDAO;
 	}
 
 	public int updateEmp(EmpVO vo) {
+		// TODO Auto-generated method stub
 		return update("empDAO.updateEmp",vo);
 	}
 
-	public int deleteEmp(int empno) {
-		return delete("empDAO.deleteEmp",empno);
+	public int maxcount() {
+		// TODO Auto-generated method stub
+		return (int) select("empDAO.maxcount");
 	}
 
-	public int selectEmpEmpno() {
-		return (int) select("empDAO.selectEmpEmpno");
+	public List<?> selectJobList() {
+		// TODO Auto-generated method stub
+		return list("empDAO.selectJobList");
 	}
 
-	public List<?> selectEmpJobList() {
-		return list("empDAO.selectEmpJobList");
-	}
-	
+
 }
-
-
-
-
-

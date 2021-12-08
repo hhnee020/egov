@@ -1,96 +1,107 @@
+<%@page import="java.util.Calendar"%>
+<%@ page import="java.sql.ResultSet"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-
+    
+    
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+
 
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-	<title>자료 게시판 목록</title>
-	<link rel="stylesheet" href="/css/admin_main.css">
-	<script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+<title>Insert title here</title>
+
+	  <link rel="stylesheet" href="css/admin_main.css">
+		<script src="https://code.jquery.com/jquery-3.6.0.js"></script>
 </head>
 
+
 <script>
-
-$(function(){ 
+function fn_action(a,b) {
+	document.frm.ord.value=a;
+	document.frm.desc.value=b;
 	
+	document.frm.submit();
+}
+
+$(function(){
 	$("#allchk").click(function(){
-		if( $("#allchk").prop("checked") == true ) {
-			$("input[name='chk']").prop("checked",true);
+		if($("#allchk").prop("checked")){
+			$(".chk").prop("checked",true);
 		} else {
-			$("input[name='chk']").prop("checked",false);
+			$(".chk").prop("checked",false);
 		}
-	});	
+	})
 	
-	$("#btn_all_delete").click(function(){
-		
-		var len = $("input[name='chk']").length;
-		var values = "";
-		
-		for(var i=0; i<len; i++) {
-			var chk = document.getElementsByName('chk')[i].checked;
-			if( chk == true ) {
-				values += document.getElementsByName('chk')[i].value;
-				values += ",";
+	$("#btn_delete").click(function(){
+		var array= [];
+		$(".chk").each(function(){
+			if($(this).prop("checked")){
+				array.push($(this).val());
 			}
-		}
-		
-		if(values.length > 0) {
-			
-			if(  confirm("일괄 삭제를 진행하시겠습니까?")  ) {
-				$.ajax({
-					type : "post",
-					url  : "fileboardAllDelete.do",
-					data : "values="+values,
-					datatype : "text",
-					success : function(data) {
-						if(data == "ok") {
-							alert("삭제 처리 완료");
-							document.location.reload();
-						} else {
-							alert("삭제 처리 실패!!");
-						}	
-					},
-					error : function() {
-						alert("시스템 오류");
-					}
-				});
-			}
-		}
-	});
-	
-});
+		})
 
-function fn_delete(unq) {
+		console.log(array.length);
+		if(array.length >= 1){
+
+			$.ajax({
+				type: "POST",
+				url: "fileboardAllDelete.do",
+				data: { "array_data" : array},
+				dataType:'text',
+				success: function(status){
+					if(status == "ok"){
+						alert("삭제 성공!");
+						location.reload();
+					} else {
+						alert("삭제 실패!");
+						location.reload();
+					}
+				},
+				error: function(){
+					alert("오류!");
+					}
+			})
+		} else {
+			alert("한 건 이상의 데이터를 선택해주세요")
+		}
+	})
+})
+
+function fn_delete(unq){
 	
-	if( confirm("정말 삭제하시겠습니까?") ) {
-		$.ajax({
-			type : "post",
-			url  : "fileboardDelete.do",
-			data : "unq="+unq,
-			datatype : "text",
-			success : function(data) {
-				if(data == "ok") {
-					alert("삭제 처리 완료");
-					document.location.reload();
-				} else {
-					alert("삭제 처리 실패!!");
-				}	
-			},
-			error : function() {
-				alert("시스템 오류");
-			}
-		});
-	}
+	if(confirm("정말 삭제하시겠습니까?")){
+		
+		 $.ajax({
+				type: "POST",
+				url: "fileboardDelete.do",
+				data: "unq=" + unq,
+				datatype: "text",
+				success: function(status){
+					if(status == "ok"){
+						alert("삭제 성공!");
+						location.reload();
+					} else {
+						alert("삭제 실패!");
+						location.reload();
+					}
+				},
+				error: function(){
+					alert("오류!");
+					}
+			 	})
+		}
 }
 </script>
 
 
 <body>
+
 <div class="div1">
+
 	<div class="div_top">
 		<h2>관리자모드</h2>
 	</div>
@@ -103,106 +114,98 @@ function fn_delete(unq) {
 	</div>
 	<div class="div3">
 	
+		
 		<div style="position:relative; left:20px; top:30px; margin-bottom:10px;">
-
+			
 		</div>
-
+	
+	
 		<div style="position:relative; left:20px; top:30px; margin-bottom:5px;">
-			<span style="font-size:20px;font-weight:blod;">자료 게시판 목록</span>
+			<span style="font-size:20px;">자료게시판 목록</span> 
 		</div>
-		
-		<div style="position:relative; width:800px; left:20px; top:30px; margin-bottom:10px;">
-	
-			<div style="position:relative; float:left; width:400px;" >
-			총 출력 개수 : ${vo.total }
+		<div style="position:relative; left:20px; top:30px; margin-bottom:10px; width:800px;">
+			<div>
+				<span>총 조회개수 : ${vo.total}</span>
 			</div>
-			
 			<form name="frm" method="post" action="admin_nboardList.do">
-			<div style="position:relative; text-align:right;" >
-				<select name="s_field">
-					<option value="title"   <c:if test="${s_field == 'title' }">selected</c:if>>제목</option>
-					<option value="content" <c:if test="${s_field == 'content' }">selected</c:if>>내용</option>
-					<option value="rdate"   <c:if test="${s_field == 'rdate' }">selected</c:if>>등록일</option>
-				</select>
-				<input type="text" name="s_text" style="width:120px;" value="${s_text }">
-				<button type="submit" id="btn_search">검색</button>
-			</div>
+				
+				<div style="position:relative; text-align:right;">
+					<select name="s_field">
+						<option value="title" <c:if test="${s_field =='title'}">selected </c:if> >제목</option>
+						<option value="content" <c:if test="${s_field =='content'}">selected </c:if> >내용</option>
+						<option value="rdate" <c:if test="${s_field =='rdate'}">selected </c:if> >등록일</option>
+					</select>
+					<input type="text" name="s_text" style="width:120px;" value="${s_text}">
+					<button type="submit" id="btn_search">버튼</button>
+				</div>
 			</form>
-		
 		</div>
+	
+
 		<div style="position:relative; left:20px; top:30px;">
-	
-	<table style="width:800px;" >
-		<colgroup>
-			<col width="5%"/>
-			<col width="10%"/>
-			<col width="*"/>
-			<col width="10%"/>
-			<col width="10%"/>
-			<col width="10%"/>
-			<col width="10%"/>
-			<col width="10%"/>
-		</colgroup>
-		<tr>
-			<th> <input type="checkbox" id="allchk">  </th>
-			<th>번호</th>
-			<th>제목</th>
-			<th>이름</th>
-			<th>등록일</th>
-			<th>조회수</th>
-			<th>파일</th>
-		</tr>
-
-
-		<c:set var="rownum" value="${vo.rownum }"/>
-
-		<c:forEach var="result" items="${list}">
-
-		<tr align="center">
-			<td> <input type="checkbox" name="chk" value="${result.unq }" ></td>
-			<td>${rownum } </td>
-			<td align="left">
-	<a href="fileboardDetail.do?unq=${result.unq }&s_field=${s_field}&s_text=${s_text}">${result.title }</a></td>
-			<td>${result.name }</td>
-			<td>${result.rdate }</td> 
-			<td>${result.hits }</td>
-			<td>
-			<c:set var="filename" value="${result.filename }" />
-			<%
-      		String filename = (String)pageContext.getAttribute("filename") ;
 			
-			if(filename != null && !filename.equals("")) {
-				String[] array = filename.split("／");
-				for( int i=0; i<array.length; i++ ) {
-			%>
-					<a href="javascript:window.open(encodeURI('downloadFile.do?file=<%=array[i] %>'))"><%=array[i] %></a>
+			<table style="width:800px">
+				<colgroup>
+					<col style="width:5%"/>
+					<col style="width:10%"/>
+					<col style="width:*"/>
+					<col style="width:10%"/>
+					<col style="width:10%"/>
+					<col style="width:10%"/>
+					<col style="width:10%"/>
+				</colgroup>
+				<tr>
+					<th><input type="checkbox" name="allcheck" id="allchk"> </th>
+					<th>번호</th>
+					<th>제목</th>
+					<th>이름</th>
+					<th>등록일</th>
+					<th>조회수</th>
+					<th>파일</th>
+				</tr>
+				
+				<c:set var="rownum" value="${vo.rownum }"/>
+				
+				<c:forEach var="result" items="${result}">
+					<tr>
+						<td><input type="checkbox" name="chk" class ="chk" value="${result.unq }"></td>
+						<td>${rownum}</td>
+							<td align="left">
+						<a href="fileboardDetail.do?unq=${result.unq }&s_field=${s_field}&s_text=${s_text}">${result.title }</a></td>
+						<td>${result.name}</td>
+						<td>${result.rdate}</td>
+						<td>${result.hits}</td>
+						<td>
+						<c:set var="filename" value="${result.filename }"/>
+						<%
+						
+						String filename = (String) pageContext.getAttribute("filename");
+						if(filename != null && !filename.equals("")){
+						String [] array = filename.split("／");
+						for(int i = 0 ; i <array.length; i++){
+							%>
+							<a href="javascript:window.open(encodeURI('downloadFile.do?requestedFile=<%=array[i] %>'))"><%=array[i] %></a>
+							<br>
+							<%
+							}
+						}
+							%>
+						</td>
+					</tr>
 					
-					<%-- <a href="http://localhost:9080/upload/<%=array[i] %>"><%=array[i] %></a> --%>
-					<br>
-			<%
-				}
-			}
- 			%>
-
-			</td>
-		</tr>
-		
-		<c:set var="rownum" value="${rownum-1}"/>
-		</c:forEach>
-
-	</table>
-	
-	<div style="width:800px; text-align:left; margin-top:10px;">
-		<button type="button" id="btn_all_delete">일괄삭제</button>
-	</div>
-	
-	<div style="width:800px; text-align:center; margin-top:10px;">
+					<c:set var="rownum" value="${rownum-1}"></c:set>
+					
+				</c:forEach>
 			
-			<c:forEach var="i" begin="1" end="${vo.total_page }">
-				<a href="fileboardList.do?page_no=${i }&s_field=${s_field}&s_text=${s_text}">${i }</a>
-			</c:forEach>
-	</div>
-	
+			</table>
+			<div style="wiidth:800px; text-align:left; margin-top:10px;">
+				<button type="button" id="btn_delete" onclick="" >check delete</button>
+			</div>
+			<div style="wiidth:800px; text-align:center; margin-top:10px;">
+				<c:forEach var="i" begin="1" end="${vo.totalpage}">
+					<a href="fileBoardList.do?pageNo=${i}&s_field=${s_field}&s_text=${s_text}">${i}</a>
+				</c:forEach>
+			</div>
 		</div>
 	</div>
 </div>

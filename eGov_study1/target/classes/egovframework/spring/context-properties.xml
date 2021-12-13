@@ -7,7 +7,7 @@
 	        <map>
 	        	<entry key="pageUnit" value="10"/>
 	        	<entry key="pageSize" value="10"/>
-	        	<entry key="uploadDir" value="/Users/hani/eclipse-workspace/apple1/src/main/webapp/upload"/>
+	        	<entry key="uploadDir" value="D:/eGovFrameDev-3.10.0-64bit(2)/workspace/apple1/src/main/webapp/upload"/>
 	        </map>
 		</property>
 	</bean>

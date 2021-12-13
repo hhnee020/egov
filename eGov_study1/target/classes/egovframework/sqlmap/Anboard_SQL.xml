@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+
+<sqlMap namespace="anboard_space">
+
+	<typeAlias  alias="egovMap"  	type="egovframework.rte.psl.dataaccess.util.EgovMap"/>
+	<typeAlias  alias="anboardvo"	type="egov.service.AnboardVO"/>
+	
+	<!-- ibatis, mybatis -->
+	
+	<insert id="anboardDAO.insertAnboard">
+	
+		INSERT INTO anboard (
+						unq,
+						title,
+						pass,
+						name,
+						content,
+						rdate,
+						udate,
+						lev,
+						fid  ) VALUES (
+						
+						anboard_seq.nextval,
+						#title#,
+						#pass#,
+						#name#,
+						#content#,
+						sysdate,
+						sysdate,
+						'1',
+						anboard_seq.currval )
+	</insert>
+	
+	<insert id="anboardDAO.insertAnboardReply">
+	
+				INSERT INTO anboard (
+						unq,
+						title,
+						pass,
+						name,
+						content,
+						rdate,
+						udate,
+						lev,
+						fid  ) VALUES (
+
+						anboard_seq.nextval,
+						#title#,
+						#pass#,
+						#name#,
+						#content#,
+						sysdate,
+						sysdate,
+						(select nvl(max(lev),'$lev$'||'00')+1 from anboard
+	                                        where fid='$fid$' and lev like '$lev$__'),
+						#fid#  )
+	</insert>
+
+	
+	<select id="anboardDAO.selectAnboardList" resultClass="egovMap">
+	
+		SELECT b.* FROM (	
+				SELECT rownum rn, a.* FROM (
+						SELECT 
+								unq,
+								title,
+								name,
+								hits,
+								to_char(rdate,'yyyy/mm/dd') rdate,
+								lev
+						FROM 
+								anboard 
+						ORDER BY 
+								fid DESC, lev ASC ) a ) b
+	
+			WHERE  rn  BETWEEN  $s_no$ AND  $e_no$
+	
+	</select>
+	
+	<select id="anboardDAO.selectAnboardTotal" resultClass="java.lang.Integer">
+	
+			SELECT COUNT(*) FROM anboard 
+	
+	</select>
+
+	<select id="anboardDAO.selectAnboardDetail" resultClass="anboardvo">
+		SELECT  unq,
+				title,   
+				name,
+				hits,
+				to_char(rdate,'yyyy/mm/dd') rdate,
+				to_char(udate,'yyyy/mm/dd') udate,
+				content,
+				lev,
+				fid
+		FROM 
+				anboard 
+		WHERE
+				unq=#unq#
+	</select>
+	
+	<select id="anboardDAO.selectAnboardPass"  resultClass="java.lang.Integer">
+	
+		select count(*) from anboard 
+					where unq=#unq# and pass=#pass#
+	</select>
+	
+	<select id="anboardDAO.selectAnboardLev"  resultClass="java.lang.Integer">
+	
+		select count(*) from anboard 
+					where fid='$fid$' and lev like '$lev$__'
+	</select>
+	
+	<update id="anboardDAO.updateAnboardDel">
+			update anboard
+						set title='글쓴이에 의한 삭제',
+		    				content=''
+        		where 
+        				unq=#unq#
+	</update>
+	
+	<update id="anboardDAO.updateAnboard">
+			update anboard
+						set  title=#title#,
+							 name=#name#,
+							 content=#content#,
+							 udate=sysdate
+					where
+							unq=#unq#
+	</update>
+	
+	<update id="anboardDAO.updateAnboardHits">
+			update anboard
+						set hits=hits+1
+				where
+						unq=#unq#
+	</update>
+	
+	
+	
+	<delete id="anboardDAO.deleteAnboard">
+			delete from anboard  where unq=#unq#
+	</delete>
+	
+
+
+</sqlMap>
+
+
+
+

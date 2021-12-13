@@ -47,6 +47,7 @@
   				success : function(data) {  // ok
   					if(data == "ok") {
   						alert("저장완료");
+  						location="reviewList.do";
   					} else {
   						alert("저장실패");
   					}

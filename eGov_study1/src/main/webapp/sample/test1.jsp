@@ -7,6 +7,10 @@
 <title>Insert title here</title>
 </head>
 <body>
-테스트1이에용
+
+<p align="center">
+	<font size="5">Test1</font> 
+</p>
+
 </body>
 </html>

@@ -1,85 +1,46 @@
 package egov.service;
 
-import lombok.Getter;
-import lombok.Setter;
-
-@Getter
-@Setter
 public class FileVO {
 
+	int unq;        // default : 0
+	String title;   // default : null
+	String pass;
+	String name;
+	String content;
+	int hits;
+	String rdate;
+	String udate;
+	String filename;
+	String filesize;
+	   
 	
+	int page_unit = 10;
+	int page_size = 10;
 	
-	private int unq;        // default : 0
-	private String title;   // default : null
-	private String pass;
-	private String name;
-	private String content;
-	private int hits;
-	private String rdate;
-	private String udate;
-	private String filename;
-	private String filesize;
+	int page_no = 1;
+	
+	int total = 1;
+	int total_page = 1;
+	int rownum = 1;
+	
+	int s_no = 1;
+	int e_no = 10;
+	
+	String s_field;
+	String s_text;
+	
 
-	private int page_unit=10;
-	private int page_size = 10;
-	private int total = 1;
-	private int totalpage =1;
-	private int pageNo =1;
-	private int rownum = 1;
-	private int sNo=1;
-	private int eNo=10;
-	private String s_field ="";
-	private String s_text="";
-
-	
-	
-	public int getPage_unit() {
-		return page_unit;
+	public int getS_no() {
+		return s_no;
 	}
-	public void setPage_unit(int page_unit) {
-		this.page_unit = page_unit;
+	public void setS_no(int s_no) {
+		this.s_no = s_no;
 	}
-	public int getPage_size() {
-		return page_size;
+	public int getE_no() {
+		return e_no;
 	}
-	public void setPage_size(int page_size) {
-		this.page_size = page_size;
-	}
-	public int getTotal() {
-		return total;
-	}
-	public void setTotal(int total) {
-		this.total = total;
-	}
-	public int getTotalpage() {
-		return totalpage;
-	}
-	public void setTotalpage(int totalpage) {
-		this.totalpage = totalpage;
-	}
-	public int getPageNo() {
-		return pageNo;
-	}
-	public void setPageNo(int pageNo) {
-		this.pageNo = pageNo;
-	}
-	public int getRownum() {
-		return rownum;
-	}
-	public void setRownum(int rownum) {
-		this.rownum = rownum;
-	}
-	public int getsNo() {
-		return sNo;
-	}
-	public void setsNo(int sNo) {
-		this.sNo = sNo;
-	}
-	public int geteNo() {
-		return eNo;
-	}
-	public void seteNo(int eNo) {
-		this.eNo = eNo;
+	public void setE_no(int e_no) {
+		this.e_no = e_no;
 	}
 	public String getS_field() {
 		return s_field;
@@ -92,6 +53,42 @@ public class FileVO {
 	}
 	public void setS_text(String s_text) {
 		this.s_text = s_text;
+	}
+	public int getPage_unit() {
+		return page_unit;
+	}
+	public void setPage_unit(int page_unit) {
+		this.page_unit = page_unit;
+	}
+	public int getPage_size() {
+		return page_size;
+	}
+	public void setPage_size(int page_size) {
+		this.page_size = page_size;
+	}
+	public int getPage_no() {
+		return page_no;
+	}
+	public void setPage_no(int page_no) {
+		this.page_no = page_no;
+	}
+	public int getTotal() {
+		return total;
+	}
+	public void setTotal(int total) {
+		this.total = total;
+	}
+	public int getTotal_page() {
+		return total_page;
+	}
+	public void setTotal_page(int total_page) {
+		this.total_page = total_page;
+	}
+	public int getRownum() {
+		return rownum;
+	}
+	public void setRownum(int rownum) {
+		this.rownum = rownum;
 	}
 	public int getUnq() {
 		return unq;

@@ -1,5 +1,7 @@
-package egov.service.Impl;
-
+/**
+ * 
+ */
+package egov.service.impl;
 
 import java.util.List;
 
@@ -7,6 +9,7 @@ import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
 
+import egov.service.CommentVO;
 import egov.service.ReviewService;
 import egov.service.ReviewVO;
 
@@ -17,7 +20,6 @@ import egov.service.ReviewVO;
 @Service("reviewService")
 public class ReviewImpl implements ReviewService {
 
-	
 	@Resource(name="reviewDAO")
 	ReviewDAO reviewDAO;
 	
@@ -49,6 +51,41 @@ public class ReviewImpl implements ReviewService {
 	@Override
 	public int selectReviewTotal(ReviewVO vo) throws Exception {
 		return reviewDAO.selectReviewTotal(vo);
+	}
+
+	@Override
+	public String insertComment(CommentVO vo) throws Exception {
+		return reviewDAO.insertComment(vo);
+	}
+
+	@Override
+	public List<?> selectCommList(ReviewVO vo) throws Exception {
+		return reviewDAO.selectCommList(vo);
+	}
+
+	@Override
+	public int selectCommentPass(CommentVO vo) throws Exception {
+		return reviewDAO.selectCommentPass(vo);
+	}
+
+	@Override
+	public int updateComment(CommentVO vo) throws Exception {
+		return reviewDAO.updateComment(vo);
+	}
+
+	@Override
+	public int deleteComment(CommentVO vo) throws Exception {
+		return reviewDAO.deleteComment(vo);
+	}
+
+	@Override
+	public int selectReviewPass(ReviewVO vo) throws Exception {
+		return reviewDAO.selectReviewPass(vo);
+	}
+
+	@Override
+	public int deleteCommentAll(int p_unq) throws Exception {
+		return reviewDAO.deleteCommentAll(p_unq);
 	}
 
 }

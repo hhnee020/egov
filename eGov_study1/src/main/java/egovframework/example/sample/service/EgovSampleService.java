@@ -22,9 +22,9 @@ import java.util.List;
  * @Description : EgovSampleService Class
  * @Modification Information
  * @
- * @  수정일      수정자              수정내용
+ * @    수정일             수정자              수정내용
  * @ ---------   ---------   -------------------------------
- * @ 2009.03.16           최초생성
+ * @ 2009.03.16    홍길동              최초생성
  *
  * @author 개발프레임웍크 실행환경 개발팀
  * @since 2009. 03.16
@@ -34,18 +34,33 @@ import java.util.List;
  *  Copyright (C) by MOPAS All right reserved.
  */
 public interface EgovSampleService {
-	
+
+	/*
+	 * 부서정보 저장
+	 */
 	String insertDept(DeptVO vo) throws Exception;
 	
+	/*
+	 * 부서정보 출력
+	 */
 	List<?> selectDeptList() throws Exception;
 	
+	/*
+	 * 상세보기(수정화면)
+	 */
 	DeptVO selectDeptDetail(int deptno) throws Exception;
-
-	int modifySaveDept(DeptVO deptvo) throws Exception;
 	
-
-	int deleteDept(int deptno)  throws Exception;
-
+	/*
+	 * 수정(변경)처리
+	 */
+	int updateDept(DeptVO vo) throws Exception;
+	
+	/*
+	 * 삭제 처리
+	 */
+	int deleteDept(DeptVO vo) throws Exception;
+	
+	
 	/**
 	 * 글을 등록한다.
 	 * @param vo - 등록할 정보가 담긴 SampleVO
@@ -93,7 +108,5 @@ public interface EgovSampleService {
 	 * @exception
 	 */
 	int selectSampleListTotCnt(SampleDefaultVO searchVO);
-
-
 
 }

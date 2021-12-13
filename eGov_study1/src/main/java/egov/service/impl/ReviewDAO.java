@@ -1,14 +1,13 @@
-package egov.service.Impl;
-
 /**
  * 
  */
-
+package egov.service.impl;
 
 import java.util.List;
 
 import org.springframework.stereotype.Repository;
 
+import egov.service.CommentVO;
 import egov.service.ReviewVO;
 import egovframework.rte.psl.dataaccess.EgovAbstractDAO;
 
@@ -43,5 +42,38 @@ public class ReviewDAO  extends EgovAbstractDAO {
 		return (int) select("reviewDAO.selectReviewTotal",vo);
 	}
 
+	public String insertComment(CommentVO vo) {
+		return (String) insert("reviewDAO.insertComment",vo);
+	}
+
+	public List<?> selectCommList(ReviewVO vo) {
+		return list("reviewDAO.selectCommList",vo);
+	}
+
+	public int selectCommentPass(CommentVO vo) {
+		return (int) select("reviewDAO.selectCommentPass",vo);
+	}
+
+	public int updateComment(CommentVO vo) {
+		return update("reviewDAO.updateComment",vo);
+	}
+
+	public int deleteComment(CommentVO vo) {
+		return delete("reviewDAO.deleteComment",vo);
+	}
+
+	public int selectReviewPass(ReviewVO vo) {
+		return (int) select("reviewDAO.selectReviewPass",vo);
+	}
+
+	public int deleteCommentAll(int p_unq) {
+		return delete("reviewDAO.deleteCommentAll",p_unq);
+	}
+
 }
+
+
+
+
+
 

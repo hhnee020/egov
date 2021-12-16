@@ -7,5 +7,4 @@
 	<sqlMap resource="egovframework/sqlmap/NBoard_SQL.xml"/>
 	<sqlMap resource="egovframework/sqlmap/File_SQL.xml"/>
 	<sqlMap resource="egovframework/sqlmap/Review_SQL.xml"/>
-	<sqlMap resource="egovframework/sqlmap/Anboard_SQL.xml"/>
 </sqlMapConfig>

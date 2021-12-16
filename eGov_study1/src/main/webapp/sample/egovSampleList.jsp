@@ -56,10 +56,6 @@
         //-->
     </script>
 </head>
-<style>
-.aa { font-size:12px;color:blue; }
-
-</style>
 
 <body style="text-align:center; margin:0 auto; display:inline; padding-top:100px;">
     <form:form commandName="searchVO" id="listForm" name="listForm" method="post">
@@ -105,7 +101,7 @@
         				<col width="60"/>
         			</colgroup>
         			<tr>
-        				<th align="center">번호</th>
+        				<th align="center">No</th>
         				<th align="center"><spring:message code="title.sample.id" /></th>
         				<th align="center"><spring:message code="title.sample.name" /></th>
         				<th align="center"><spring:message code="title.sample.useYn" /></th>
@@ -116,10 +112,10 @@
             			<tr>
             				<td align="center" class="listtd"><c:out value="${paginationInfo.totalRecordCount+1 - ((searchVO.pageIndex-1) * searchVO.pageSize + status.count)}"/></td>
             				<td align="center" class="listtd"><a href="javascript:fn_egov_select('<c:out value="${result.id}"/>')"><c:out value="${result.id}"/></a></td>
-            				<td align="left" class="listtd"><c:out value="${result.name}"/>&nbsp;</td>
-            				<td align="center" class="listtd"><c:out value="${result.useYn}"/>&nbsp;</td>
-            				<td align="center" class="listtd"><c:out value="${result.description}"/>&nbsp;</td>
-            				<td align="center" class="listtd"><c:out value="${result.regUser}"/>&nbsp;</td>
+            				<td align="left" class="listtd"><c:out value="${result.name}"/></td>
+            				<td align="center" class="listtd"><c:out value="${result.useYn}"/></td>
+            				<td align="center" class="listtd"><c:out value="${result.description}"/>&;</td>
+            				<td align="center" class="listtd"><c:out value="${result.regUser}"/>&;</td>
             			</tr>
         			</c:forEach>
         		</table>

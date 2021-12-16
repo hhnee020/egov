@@ -17,98 +17,8 @@
   	<script src="https://code.jquery.com/ui/1.13.0/jquery-ui.js"></script>
   	
   	<script>
-  	
-  	function fn_comm_delete(unq) {
-  		$("#unq").val(unq);
-  		$("#btn_comment_save").html("삭제");
-  		
-  		$("#name").val("");
-  		$("#mark").val("3");
-  		$("#comment1").val("");
-  		
-  		alert("암호 입력 후 삭제 버튼을 클릭해 주세요.");
-  	}
-  	
-  	
-  	function fn_modify(unq,name,mark,comment1) {
-  		
-  		$("#unq").val(unq);
-  		$("#name").val(name);
-  		$("#mark").val(mark);
-  		$("#comment1").val(comment1);
-  		$("#btn_comment_save").html("수정");
-  		
-  		//alert($("#mark option:selected").val());	
-  	}
-  	
   	$(function() {
-  		
-  		$("#btn_save").click(function(){
-  			location = "reviewModify.do?unq=${vo.unq}";
-  		});
-  		
-  		$("#btn_delete").click(function(){
-  			location = "passWrite.do?unq=${vo.unq}&type=review";
-  		});
 
-  		$("#btn_comment_save").click(function(){
-  			
-  		
-  			var url = "commentSave.do";
-  			var msg = "등록";  // unq = 0; 설정
-
-  			var unq = $("#unq").val();
-  			var button_text = $("#btn_comment_save").text();
-  			
-  			if( unq > 0 && button_text == "수정" ) {
-  				url = "commentModify.do";
-  				msg = "수정";
-  			} else if( unq > 0 && button_text == "삭제"  ) {
-  				url = "commentDelete.do";
-  				msg = "삭제";
-  			}
-  			
-  			if( msg != "삭제" ) {
-	  			if( $("#comment1").val() == ""  ) {
-	  				alert("코맨트를 입력해주세요.");
-	  				$("#comment1").focus();
-	  				return false;
-	  			}
-	  			if( $("#name").val() == ""  ) {
-	  				alert("이름을 입력해주세요.");
-	  				$("#name").focus();
-	  				return false;
-	  			}
-  			}
-  			
-  			if( $("#pass").val() == ""  ) {
-  				alert("암호를 입력해주세요.");
-  				$("#pass").focus();
-  				return false;
-  			}
-  			
-  			var formdata = $("#frm").serialize();
-  			$.ajax({
-  				type : "post",
-  				url  : url,
-  				data : formdata,
-  				
-  				datatype:"text",
-  				success : function(data){
-  					if(data == "ok") {
-  						alert(msg + "성공");
-  						location.reload();
-  					} else if(data == "pass_fail"){
-  						alert("암호가 일치하지 않습니다.");
-  					} else {
-  						alert(msg + "실패");
-  					}
-  				},
-  				error   : function() {
-  					alert("전송오류");
-  				}
-  			});
-  		});
   	});
   	</script>
 	
@@ -147,6 +57,7 @@
 
 		<div style="position:relative; left:20px; top:30px;">
 		
+	<form id="frm">
 	<table style="width:600px;">
 		<colgroup>
 			<col width="20%"/>
@@ -189,109 +100,8 @@
 		<button type="button"  id="btn_save">수정</button>
 		<button type="button"  id="btn_delete">삭제</button>
 	</div>
-
-	<div>
-	
-	<form id="frm">
-	
-	<input type="hidden" name="p_unq" value="${vo.unq}">
-	
-	<input type="hidden" name="unq" id="unq" value="0">
-	
-	<table style="width:600px;margin-top:20px;">
-		<colgroup>
-			<col width="*"/>
-			<col width="17%"/>
-			<col width="17%"/>
-			<col width="17%"/>
-			<col width="10%"/>
-		</colgroup>
-		<tr>
-			<th>코맨트</th>  
-			<th>이름</th>
-			<th>별점</th>
-			<th>암호</th>
-			<th rowspan="2"><button type="button" id="btn_comment_save">등록</button></th>
-		</tr>
-		<tr>
-			<td><input type="text" name="comment1" id="comment1" style="width:330px;"></td>
-			<td><input type="text" name="name" id="name" style="width:60px;"></td>
-			<td>
-				<select name="mark" id="mark">
-					<option value="5">최고</option>
-					<option value="4">좋음</option>
-					<option value="3" selected>보통</option>
-					<option value="2">부족</option>
-					<option value="1">나쁨</option>
-				</select>
-			</td>
-			<td><input type="password" name="pass" id="pass" style="width:60px;"></td>
-		</tr>
-	</table>
 	</form>
-	</div>
 	
-	
-	<div>
-	  
-	<table style="width:600px;margin-top:20px;">
-		<colgroup>
-			<col width="5%" />
-			<col width="*" />
-			<col width="10%" />
-			<col width="10%" />
-			<col width="10%" />
-			<col width="7%" />
-		</colgroup>
-		<tr>
-			<th>no.</th>
-			<th>코맨트</th>
-			<th>이름</th>
-			<th>등록</th>
-			<th>별점</th>
-			<th>수/사 </th>
-		</tr>
-	
-	<c:forEach var="result" items="${comm_list }" varStatus="status">
-		<tr align="center">
-			<td>${status.count }</td>
-			<td>${result.comment1 }</td>
-			<td>${result.name }</td>
-			<td>${result.rdate }</td>
-			<td>${result.markmsg }<br> 
-
-			<c:set var="mark_number" value="${result.mark}" />
-			<%
-			String mark_number = pageContext.getAttribute("mark_number")+"";
-			int mark = Integer.parseInt(mark_number);
-			for(int i=1; i<=5; i++) {
-				if( i <= mark ) { out.print("★"); }
-				else { out.print("☆"); }
-			}
-			%>
-			<%-- <c:forEach var="j" begin="1" end="5">
-               <c:if test="${result.mark >= j}">★</c:if>
-               <c:if test="${result.mark < j}">☆</c:if>
-            </c:forEach>  --%>         
-			<br>
-			</td>
-			<td>
-			<a href="javascript:fn_modify('${result.unq}','${result.name}','${result.mark}','${result.comment1}')">M</a>
-			/
-			<a href="javascript:fn_comm_delete('${result.unq}')">D</a></td>
-		</tr>
-	</c:forEach>
-	
-	</table>
-	
-	<p>
-	&nbsp;
-	</p>
-	
-	</div>
-	
-	
-
 		</div>
 	</div>
 </div>

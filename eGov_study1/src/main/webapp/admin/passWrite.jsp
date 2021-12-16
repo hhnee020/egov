@@ -21,35 +21,23 @@
 		
   		$("#btn_del").click(function(){  
   			
-  			var url = "fileboardDelete.do";
-  			var loc = "fileboardList.do";
-  			
-  			var type = "${type}";
-  			
-  			if( type == "review" ) {
-  				url = "reviewDelete.do";
-  				loc = "reviewList.do";
-  			
-  			} else if( type == "an" ) {
-  				url = "anboardDelete.do";
-  				loc = "anboardList.do";
-  			}
-
   			if( $.trim($("#pass").val()) == "" ) {
   				alert("암호를 입력해주세요.");
   				$("#pass").focus();
   				return false;
   			}
+  			
   			var formdata = $("#frm").serialize();
+  			
   			$.ajax({
   				type : "POST",
-  				url  : url,
+  				url  : "fileboardDelete.do",
   				data : formdata,
+  				
   				datatype : "text",
   				success : function(data) {
   					if(data == "ok") {
   						alert("삭제완료");
-  						location=loc;	
   					} else if(data == "pass_fail") {
   						alert("암호가 일치하지 않습니다.");
   					} else {
@@ -100,8 +88,6 @@
 	<form id="frm">
 	
 	<input type="hidden" name="unq" value="${unq }" />
-	<input type="hidden" name="fid" value="${fid }" />
-	<input type="hidden" name="lev" value="${lev }" />
 	<input type="hidden" name="filename" value="${filename }" />
 	
 	<table style="width:600px;">

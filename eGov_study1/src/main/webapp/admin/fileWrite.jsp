@@ -64,7 +64,7 @@
 
 </style>
 
-<spring:message code="upload.dir" />
+<!------<spring:message code="upload.dir" />------->
 
 <body>
 <div class="div1">
